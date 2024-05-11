@@ -1,0 +1,12 @@
+package-as: Tabardy
+enable-nolib-creation: no
+
+license-output: LICENSE
+
+ignore:
+  - CHANGELOG.md
+  - README.md
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
