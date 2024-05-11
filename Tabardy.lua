@@ -172,10 +172,6 @@ TabardyDesignerCustomizationMixin = {};
 
 function TabardyDesignerCustomizationMixin:OnLoad_Custom()
     SelectionPopoutWithButtonsAndLabelMixin.OnLoad(self);
-
-    local designer = self:GetParent():GetParent();
-    local id = self:GetID();
-
     self.Label:SetPoint("RIGHT", self.DecrementButton, "LEFT", -10, 0);
 end
 
@@ -230,6 +226,47 @@ function TabardyDesignerCustomizationMixin:OnEntrySelected(entryData)
 end
 
 ------------
+
+local function ConvertRGBToHSL(r, g, b)
+    local cmax = math.max(r, g, b);
+    local cmin = math.min(r, g, b);
+    local c = cmax - cmin;
+
+    local h = 0;
+    local s = 0;
+    local l = (cmin + cmax) / 2;
+
+    if c ~= 0 then
+        s = (l == 0 or l == 1) and 0 or ((cmax - l) / math.min(l, 1 - l));
+
+        if cmax == r then
+            h = (g - b) / c + (g < b and 6 or 0);
+        elseif cmax == g then
+            h = (b - r) / c + 2;
+        else
+            h = (r - g) / c + 4;
+        end
+
+        h = h / 6;
+    end
+
+    return h, s, l;
+end
+
+local function SortColors(a, b)
+    a = a.GetRGB and a or a.Color;
+    b = b.GetRGB and b or b.Color;
+    local h1, s1, l1 = ConvertRGBToHSL(a:GetRGB());
+    local h2, s2, l2 = ConvertRGBToHSL(b:GetRGB());
+
+    if h1 ~= h2 then
+        return h1 < h2;
+    elseif s1 ~= s2 then
+        return s1 < s2;
+    else
+        return l1 < l2;
+    end
+end
 
 local PERSONAL_TABARD_ITEM_ID = 210469;
 
@@ -312,8 +349,6 @@ function TabardyDesignerMixin:SetupCustomizationOptions()
             Choices = {},
         };
 
-        self.BackgroundFileIDToIndex = {};
-        local i = 1;
         for bgFileID, bgInfo in pairs(allBackgrounds) do
             if bgInfo.Component == 3 then
                 local choice = {
@@ -322,10 +357,13 @@ function TabardyDesignerMixin:SetupCustomizationOptions()
                     Color = Tabardy.GetBackgroundColor(bgInfo.Color),
                 };
                 tinsert(bgOptionData.Choices, choice);
-
-                self.BackgroundFileIDToIndex[bgFileID] = i;
-                i = i + 1;
             end
+        end
+
+        table.sort(bgOptionData.Choices, SortColors);
+        self.BackgroundFileIDToIndex = {};
+        for i, tbl in ipairs(bgOptionData.Choices) do
+            self.BackgroundFileIDToIndex[tbl.FileID] = i;
         end
 
         local selectedColor = self:GetSelectedBackgroundColorIndex();
@@ -382,6 +420,8 @@ function TabardyDesignerMixin:SetupCustomizationOptions()
             tinsert(emblemColorOptionData.Choices, choice);
         end
 
+        table.sort(emblemColorOptionData.Choices, SortColors);
+
         local selectedEmblemColor = self:GetSelectedEmblemColorIndex();
         emblemColorOptionData.CurrentChoiceIndex = selectedEmblemColor;
         customizations.IconColorPicker:SetupOption(emblemColorOptionData);
@@ -402,6 +442,16 @@ function TabardyDesignerMixin:SetupCustomizationOptions()
             picker.IncrementButton:SetScript("OnClick", function(self, _)
                 TabardyDesigner:CycleCustomization(self:GetParent():GetID(), 1);
             end);
+
+            picker.Button:Hide();
+            picker.DecrementButton:ClearAllPoints();
+            picker.DecrementButton:SetPoint("RIGHT", picker, "CENTER", -5, 0);
+
+            picker.IncrementButton:ClearAllPoints();
+            picker.IncrementButton:SetPoint("LEFT", picker, "CENTER", 5, 0);
+
+            picker.Label:ClearAllPoints();
+            picker.Label:SetPoint("RIGHT", picker, "LEFT", -35, 0);
         end
     end
 end
