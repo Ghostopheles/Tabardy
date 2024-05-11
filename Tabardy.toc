@@ -1,0 +1,26 @@
+## Interface: 100207, 110000
+## Title: |cfffc037bTabardy|r
+## Notes: A replacement Tabard designer UI.
+## Author: Ghostopheles
+## Version: @project-version@
+
+## OptionalDeps: DevTool
+
+## IconTexture: Interface\AddOns\Datamine\Assets\icon.png
+
+## X-License: Public Domain
+## X-Category: Development Tools
+
+## X-Curse-Project-ID: 0
+## X-Wago-ID: 0
+
+TabardyData.lua
+Tabardy.lua
+Tabardy.xml
+
+Generated/BackgroundColors.lua
+Generated/Backgrounds.lua
+Generated/BorderColors.lua
+Generated/Borders.lua
+Generated/EmblemColors.lua
+Generated/Emblems.lua

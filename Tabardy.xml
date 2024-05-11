@@ -1,0 +1,328 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+    <Frame name="TabardyDesignerPopoutDetailsTemplate"
+        mixin="TabardyDesignerPopoutDetailsMixin" virtual="true">
+        <KeyValues>
+            <KeyValue key="selectable" value="true" type="boolean" />
+        </KeyValues>
+        <Layers>
+            <Layer level="ARTWORK" textureSubLevel="1">
+                <FontString parentKey="SelectionNumberBG" font="GameFontNormal_NoShadow"
+                    justifyH="LEFT">
+                    <KeyValues>
+                        <KeyValue key="ignoreInLayout" value="true" type="boolean" />
+                    </KeyValues>
+                    <Size x="25" y="20" />
+                    <Color color="NEW_FEATURE_SHADOW_COLOR" />
+                    <Anchors>
+                        <Anchor point="LEFT" x="0.5" y="-0.5" />
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="SelectionNumber" font="GameFontNormal" justifyH="LEFT">
+                    <Size x="25" y="20" />
+                    <Anchors>
+                        <Anchor point="LEFT" />
+                    </Anchors>
+                    <Shadow>
+                        <Color color="NEW_FEATURE_SHADOW_COLOR" />
+                    </Shadow>
+                </FontString>
+                <FontString parentKey="SelectionName" font="GameFontNormal" justifyH="LEFT"
+                    maxLines="1" hidden="true">
+                    <Size x="25" y="20" />
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.SelectionNumber"
+                            relativePoint="RIGHT" />
+                    </Anchors>
+                </FontString>
+                <Texture parentKey="ColorSwatch" atlas="charactercreate-customize-palette"
+                    useAtlasSize="true" hidden="true">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.SelectionNumber"
+                            relativePoint="RIGHT" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="2">
+                <Texture parentKey="ColorSwatchGlow" atlas="charactercreate-customize-palette-glow"
+                    useAtlasSize="true" alphaMode="ADD" hidden="true">
+                    <Anchors>
+                        <Anchor point="CENTER" relativeKey="$parent.ColorSwatch1"
+                            relativePoint="CENTER" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="3">
+                <Texture parentKey="ColorSelected"
+                    atlas="charactercreate-customize-palette-selected" useAtlasSize="true"
+                    hidden="true">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.ColorSwatch1" relativePoint="LEFT"
+                            x="-4" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+    </Frame>
+
+    <Button name="TabardyDesignerPopoutEntryTemplate" inherits="SelectionPopoutEntryTemplate"
+        mixin="TabardyDesignerPopoutEntryMixin" virtual="true">
+        <KeyValues>
+            <KeyValue key="defaultWidth" value="116" type="number" />
+            <KeyValue key="" value="" />
+        </KeyValues>
+        <Frames>
+            <Frame parentKey="SelectionDetails"
+                inherits="TabardyDesignerPopoutDetailsTemplate">
+                <Size x="144" y="20" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="14" y="0" />
+                </Anchors>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+        </Scripts>
+    </Button>
+
+    <Frame name="TabardyDesignerCustomizationTemplate"
+        inherits="SelectionPopoutWithButtonsAndLabelTemplate"
+        mixin="TabardyDesignerCustomizationMixin" virtual="true">
+        <Frames>
+            <EventButton parentKey="Button" inherits="SelectionPopoutButtonTemplate"
+                mixin="TabardyDesignerPopoutButtonMixin">
+                <Size x="150" y="38" />
+                <Anchors>
+                    <Anchor point="CENTER" />
+                </Anchors>
+                <KeyValues>
+                    <KeyValue key="selectionEntryTemplates"
+                        value="TabardyDesignerPopoutEntryTemplate" type="string" />
+                </KeyValues>
+                <Frames>
+                    <Frame parentKey="SelectionDetails"
+                        inherits="TabardyDesignerPopoutDetailsTemplate, ResizeLayoutFrame">
+                        <Size x="144" y="20" />
+                        <Layers>
+                            <Layer>
+                                <Texture>
+                                    <Size x="20" y="20" />
+                                </Texture>
+                            </Layer>
+                        </Layers>
+                        <KeyValues>
+                            <KeyValue key="selectable" value="false" type="boolean" />
+                        </KeyValues>
+                        <Anchors>
+                            <Anchor point="CENTER" />
+                        </Anchors>
+                    </Frame>
+                </Frames>
+            </EventButton>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Frame>
+
+    <Frame name="TabardyDesigner" inherits="PortraitFrameFlatTemplate" mixin="TabardyDesignerMixin"
+        parent="UIParent" movable="true" enableMouse="true" dontSavePosition="true" hidden="true">
+        <Size x="600" y="700" />
+        <Anchors>
+            <Anchor point="CENTER" />
+        </Anchors>
+        <Layers>
+            <Layer level="OVERLAY">
+                <Texture parentKey="Checkmark" atlas="common-icon-checkmark"
+                    alpha="0">
+                    <Size x="40" y="40" />
+                    <Anchors>
+                        <Anchor point="TOP" y="-100" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Animations>
+            <AnimationGroup parentKey="SaveAnim" setToFinalAlpha="true" looping="NONE">
+                <Alpha parentKey="Checkmark" childKey="Checkmark" fromAlpha="1" toAlpha="0"
+                    duration="0.6" order="0" />
+                <Scale parentKey="Checkmark" childKey="Checkmark" fromScaleX="0.7" toScaleX="1.5"
+                    smoothing="NONE" fromScaleY="0.7" toScaleY="1.5" duration="0.6" order="0" />
+            </AnimationGroup>
+        </Animations>
+        <Frames>
+            <TabardModel parentKey="Model" inherits="ModelWithControlsTemplate">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativePoint="TOP" x="60" />
+                    <Anchor point="BOTTOMLEFT" />
+                </Anchors>
+                <Scripts>
+                    <OnMouseWheel function="nop" />
+                </Scripts>
+            </TabardModel>
+            <Frame parentKey="MoneyFrame" inherits="SmallMoneyFrameTemplate">
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" x="4" y="8" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="CostFrame" inherits="SmallMoneyFrameTemplate">
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" y="8" />
+                </Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <FontString parentKey="Label" inherits="GameFontWhite"
+                            text="TABARDVENDORCOST">
+                            <Anchors>
+                                <Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="1" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        SmallMoneyFrame_OnLoad(self);
+                        self.small = 0;
+                        MoneyFrame_SetType(self, "STATIC");
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame parentKey="Customizations">
+                <Size x="200" y="200" />
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.CostFrame"
+                        relativePoint="TOPRIGHT" y="30" />
+                </Anchors>
+                <Frames>
+                    <Frame parentKey="IconPicker"
+                        inherits="TabardyDesignerCustomizationTemplate" id="1">
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" />
+                        </Anchors>
+                    </Frame>
+                    <Frame parentKey="IconColorPicker"
+                        inherits="TabardyDesignerCustomizationTemplate" id="2">
+                        <Anchors>
+                            <Anchor point="TOP" relativeKey="$parent.IconPicker"
+                                relativePoint="BOTTOM" />
+                        </Anchors>
+                    </Frame>
+                    <Frame parentKey="BorderPicker"
+                        inherits="TabardyDesignerCustomizationTemplate" id="3">
+                        <Anchors>
+                            <Anchor point="TOP" relativeKey="$parent.IconColorPicker"
+                                relativePoint="BOTTOM" />
+                        </Anchors>
+                    </Frame>
+                    <Frame parentKey="BorderColorPicker"
+                        inherits="TabardyDesignerCustomizationTemplate" id="4">
+                        <Anchors>
+                            <Anchor point="TOP" relativeKey="$parent.BorderPicker"
+                                relativePoint="BOTTOM" />
+                        </Anchors>
+                    </Frame>
+                    <Frame parentKey="BackgroundPicker"
+                        inherits="TabardyDesignerCustomizationTemplate" id="5">
+                        <Anchors>
+                            <Anchor point="TOP" relativeKey="$parent.BorderColorPicker"
+                                relativePoint="BOTTOM" />
+                        </Anchors>
+                    </Frame>
+                </Frames>
+            </Frame>
+            <Frame parentKey="EmblemContainer">
+                <Size x="200" y="193" />
+                <Anchors>
+                    <Anchor point="BOTTOM" relativeKey="$parent.Customizations" relativePoint="TOP"
+                        x="-25" y="100" />
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <Texture parentKey="TopLeft" alphaMode="ADD">
+                            <Size x="100" y="119" />
+                            <TexCoords left="0.5" right="0" top="0" bottom="1" />
+                            <Anchors>
+                                <Anchor point="TOPLEFT" />
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="TopRight" alphaMode="ADD">
+                            <Size x="100" y="119" />
+                            <TexCoords left="0" right="0.5" top="0" bottom="1" />
+                            <Anchors>
+                                <Anchor point="TOPRIGHT" />
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="BottomLeft" alphaMode="ADD">
+                            <Size x="100" y="74" />
+                            <TexCoords left="0.5" right="0" top="0" bottom="1" />
+                            <Anchors>
+                                <Anchor point="BOTTOMLEFT" />
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="BottomRight" alphaMode="ADD">
+                            <Size x="100" y="74" />
+                            <TexCoords left="0" right="0.5" top="0" bottom="1" />
+                            <Anchors>
+                                <Anchor point="BOTTOMRIGHT" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+            <Button parentKey="AcceptButton" inherits="UIPanelButtonTemplate" text="ACCEPT">
+                <Size x="125" y="30" />
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" x="-5" y="3" />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        CallMethodOnNearestAncestor(self, "SaveTabard");
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button parentKey="CancelButton" inherits="UIPanelButtonTemplate" text="CANCEL">
+                <Size x="125" y="30" />
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOM" x="5" y="3" />
+                </Anchors>
+                <Scripts>
+                    <OnClick function="HideParentPanel" />
+                </Scripts>
+            </Button>
+        </Frames>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString parentKey="GreetingText" font="GameFontWhite"
+                    text="TABARDVENDORGREETING">
+                    <Anchors>
+                        <Anchor point="TOP" y="-28" />
+                    </Anchors>
+                </FontString>
+                <Texture parentKey="DebugUpper">
+                    <Size x="100" y="100" />
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" relativePoint="TOPLEFT" />
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="DebugLower">
+                    <Size x="100" y="100" />
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" relativeKey="$parent.DebugUpper"
+                            relativePoint="BOTTOMRIGHT" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnEvent method="OnEvent" />
+            <OnShow method="OnShow" />
+            <OnHide method="OnHide" />
+            <OnMouseDown method="OnMouseDown" />
+            <OnMouseUp method="OnMouseUp" />
+        </Scripts>
+    </Frame>
+</Ui>
