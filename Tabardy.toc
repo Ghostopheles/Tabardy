@@ -10,7 +10,7 @@
 ## X-Category: Transmogrification
 
 ## X-Curse-Project-ID: 1016691
-## X-Wago-ID: 0
+## X-Wago-ID: QKywQaN7
 
 TabardyData.lua
 Tabardy.lua
