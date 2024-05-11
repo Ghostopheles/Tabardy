@@ -295,6 +295,11 @@ function TabardyDesignerMixin:OnEvent(event, ...)
 end
 
 function TabardyDesignerMixin:OnShow()
+    if not UnitExists("npc") then
+        self:Hide();
+        return;
+    end
+
     PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN);
     self:LoadPortrait();
     self:LoadModel();
