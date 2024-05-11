@@ -197,24 +197,10 @@
                         relativePoint="TOPRIGHT" y="30" />
                 </Anchors>
                 <Frames>
-                    <Frame parentKey="IconPicker"
-                        inherits="TabardyDesignerCustomizationTemplate" id="1">
-                        <Anchors>
-                            <Anchor point="TOPRIGHT" />
-                        </Anchors>
-                    </Frame>
-                    <Frame parentKey="IconColorPicker"
-                        inherits="TabardyDesignerCustomizationTemplate" id="2">
-                        <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.IconPicker"
-                                relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Frame>
                     <Frame parentKey="BorderPicker"
                         inherits="TabardyDesignerCustomizationTemplate" id="3">
                         <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.IconColorPicker"
-                                relativePoint="BOTTOM" />
+                            <Anchor point="TOPRIGHT" />
                         </Anchors>
                     </Frame>
                     <Frame parentKey="BorderColorPicker"
@@ -224,10 +210,25 @@
                                 relativePoint="BOTTOM" />
                         </Anchors>
                     </Frame>
+                    <Frame parentKey="IconPicker"
+                        inherits="TabardyDesignerCustomizationTemplate" id="1">
+                        <Anchors>
+                            <Anchor point="TOP" relativeKey="$parent.BorderColorPicker"
+                                relativePoint="BOTTOM" />
+                        </Anchors>
+                    </Frame>
+                    <Frame parentKey="IconColorPicker"
+                        inherits="TabardyDesignerCustomizationTemplate" id="2">
+                        <Anchors>
+                            <Anchor point="TOP" relativeKey="$parent.IconPicker"
+                                relativePoint="BOTTOM" />
+                        </Anchors>
+                    </Frame>
+
                     <Frame parentKey="BackgroundPicker"
                         inherits="TabardyDesignerCustomizationTemplate" id="5">
                         <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.BorderColorPicker"
+                            <Anchor point="TOP" relativeKey="$parent.IconColorPicker"
                                 relativePoint="BOTTOM" />
                         </Anchors>
                     </Frame>
