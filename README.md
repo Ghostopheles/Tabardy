@@ -2,7 +2,7 @@
 
 Tabardy is a complete redesign of the in-game Tabard Designer UI for World of Warcraft.
 
-![image](https://github.com/Ghostopheles/Tabardy/assets/10636803/044ac612-3920-4d04-885e-3a36220e90e0)
+![image](https://github.com/Ghostopheles/Tabardy/assets/10636803/535dd011-b394-4e43-bce8-811a1ada923e)
 
 ## Known Issues
 
