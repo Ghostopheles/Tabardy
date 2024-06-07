@@ -4,6 +4,7 @@ function TabardyNumberedColorSwatchMixin:Init(data)
     self.Selected = data.Selected;
     self.Index = data.Index;
     self.Color = data.Color;
+    self:Update();
 end
 
 function TabardyNumberedColorSwatchMixin:Update()

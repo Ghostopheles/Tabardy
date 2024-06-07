@@ -9,10 +9,10 @@
         <Layers>
             <Layer level="ARTWORK" textureSubLevel="1">
                 <FontString parentKey="Text" font="GameFontWhite"
-                    justifyH="CENTER">
+                    justifyH="LEFT">
                     <Size x="25" y="20" />
                     <Anchors>
-                        <Anchor point="LEFT" x="20" />
+                        <Anchor point="LEFT" x="5" />
                     </Anchors>
                     <Shadow>
                         <Color color="NEW_FEATURE_SHADOW_COLOR" />
@@ -21,8 +21,8 @@
                 <Texture parentKey="ColorSwatch" atlas="charactercreate-customize-palette"
                     useAtlasSize="true">
                     <Anchors>
-                        <Anchor point="LEFT" relativeKey="$parent.Text"
-                            relativePoint="RIGHT" x="5" />
+                        <Anchor point="RIGHT"
+                            relativePoint="RIGHT" x="-5" />
                     </Anchors>
                 </Texture>
             </Layer>

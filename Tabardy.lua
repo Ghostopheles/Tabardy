@@ -2,6 +2,10 @@
 
 Tabardy.Debug = true;
 
+local CUSTOMIZATION_TYPE = {
+    EMBLEM_COLOR = 3,
+}
+
 ------------
 
 TabardyDesignerPopoutDetailsMixin = {};
@@ -361,16 +365,31 @@ function TabardyDesignerMixin:PopulateEmblemColors()
     local selectedEmblemColor = self:GetSelectedEmblemColorIndex();
     local emblemColorPicker = self.Customizations.EmblemColorPicker;
 
+    local function Responder(elementData, ...)
+        print("responding!");
+        TabardyDesigner:SetCustomization(elementData.Type, elementData.Index);
+    end
+
     local function Generator(dropdown, rootDescription)
         for i, choice in pairs(choices) do
+            local data = {
+                Selected = i == selectedEmblemColor,
+                Index = i,
+                Color = choice.Color,
+                Type = CUSTOMIZATION_TYPE.EMBLEM_COLOR,
+            };
+
             local displayTemplate = rootDescription:CreateTemplate("TabardyNumberedColorSwatchTemplate");
             displayTemplate:AddInitializer(function(frame, elementDescription, menu)
-                frame:Init({
-                    Selected = i == selectedEmblemColor,
-                    Index = i,
-                    Color = choice.Color,
-                });
+                frame:Init(data);
+                frame:SetMouseClickEnabled(false);
+                frame:SetMouseMotionEnabled(false);
+                frame:RegisterForClicks();
+                frame:RegisterForMouse();
+                return 100, 20;
             end);
+            displayTemplate:SetData(data);
+            displayTemplate:SetResponder(Responder);
         end
     end
 
