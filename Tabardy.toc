@@ -12,6 +12,8 @@
 ## X-Curse-Project-ID: 1016691
 ## X-Wago-ID: QKywQaN7
 
+Templates/Dropdowns.xml
+
 TabardyData.lua
 Tabardy.lua
 Tabardy.xml

@@ -1,0 +1,95 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+    <Script file="Dropdowns.lua" />
+
+    <!-- This template is just used to display a single number + swatch -->
+    <Frame name="TabardyNumberedColorSwatchTemplate" mixin="TabardyNumberedColorSwatchMixin"
+        virtual="true">
+        <Layers>
+            <Layer level="ARTWORK" textureSubLevel="1">
+                <FontString parentKey="Text" font="GameFontWhite"
+                    justifyH="CENTER">
+                    <Size x="25" y="20" />
+                    <Anchors>
+                        <Anchor point="LEFT" x="20" />
+                    </Anchors>
+                    <Shadow>
+                        <Color color="NEW_FEATURE_SHADOW_COLOR" />
+                    </Shadow>
+                </FontString>
+                <Texture parentKey="ColorSwatch" atlas="charactercreate-customize-palette"
+                    useAtlasSize="true">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.Text"
+                            relativePoint="RIGHT" x="5" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="3">
+                <Texture parentKey="ColorSelected"
+                    atlas="charactercreate-customize-palette-selected" useAtlasSize="true"
+                    hidden="true">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.ColorSwatch"
+                            relativePoint="LEFT"
+                            x="-4" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+    </Frame>
+
+    <DropdownButton name="TabardyDropdownButtonTemplate" mixin="TabardyDropdownButtonMixin"
+        virtual="true">
+        <Size x="122" y="25" />
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" atlas="common-dropdown-c-button" useAtlasSize="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="-7" y="7" />
+                        <Anchor point="BOTTOMRIGHT" x="7" y="-7" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <Texture parentKey="Arrow" atlas="common-dropdown-c-button-hover-arrow"
+                    useAtlasSize="true">
+                    <Anchors>
+                        <Anchor point="BOTTOM" y="-5" />
+                    </Anchors>
+                </Texture>
+                <FontString parentKey="Label" font="GameFontWhite"
+                    justifyH="CENTER">
+                    <Size x="120" y="20" />
+                    <Anchors>
+                        <Anchor point="BOTTOM" relativePoint="TOP" />
+                    </Anchors>
+                    <Shadow>
+                        <Color color="NEW_FEATURE_SHADOW_COLOR" />
+                    </Shadow>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame parentKey="SelectedDisplay" inherits="TabardyNumberedColorSwatchTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="6" y="-2" />
+                    <Anchor point="BOTTOMRIGHT" x="-6" y="2" />
+                </Anchors>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnShow method="OnShow" />
+            <OnMouseDown method="OnMouseDown" />
+            <OnMouseUp method="OnMouseUp" />
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+            <OnEnable method="OnEnable" />
+            <OnDisable method="OnDisable" />
+        </Scripts>
+
+    </DropdownButton>
+
+</Ui>

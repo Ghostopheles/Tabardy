@@ -1,5 +1,9 @@
 ------------
 
+Tabardy.Debug = true;
+
+------------
+
 TabardyDesignerPopoutDetailsMixin = {};
 
 function TabardyDesignerPopoutDetailsMixin:AdjustWidth(multipleColumns, defaultWidth)
@@ -118,7 +122,7 @@ end
 
 ------------
 
-TabardyDesignerPopoutEntryMixin = CreateFromMixins(SelectionPopoutEntryMixin);
+TabardyDesignerPopoutEntryMixin = {};
 
 function TabardyDesignerPopoutEntryMixin:OnLoad()
 	SelectionPopoutEntryMixin.OnLoad(self);
@@ -152,7 +156,7 @@ end
 
 ------------
 
-TabardyDesignerPopoutButtonMixin = CreateFromMixins(SelectionPopoutButtonMixin);
+TabardyDesignerPopoutButtonMixin = {};
 
 function TabardyDesignerPopoutButtonMixin:UpdateButtonDetails()
 	local currentSelectedData = self:GetCurrentSelectedData();
@@ -295,7 +299,7 @@ function TabardyDesignerMixin:OnEvent(event, ...)
 end
 
 function TabardyDesignerMixin:OnShow()
-    if not UnitExists("npc") then
+    if not UnitExists("npc") and not Tabardy.Debug then
         self:Hide();
         return;
     end
@@ -338,7 +342,47 @@ function TabardyDesignerMixin:Toggle()
     self:SetShown(not self:IsShown());
 end
 
+function TabardyDesignerMixin:PopulateEmblemColors()
+    local allEmblemColors = Tabardy.GetAllEmblemColors();
+    local choices = {};
+
+    for emblemColorID, _ in pairs(allEmblemColors) do
+        emblemColorID = emblemColorID + 1;
+        local choice = {
+            Name = "",
+            Color = Tabardy.GetEmblemColor(emblemColorID - 1),
+            ColorID = emblemColorID,
+        };
+        tinsert(choices, choice);
+    end
+
+    table.sort(choices, SortColors);
+
+    local selectedEmblemColor = self:GetSelectedEmblemColorIndex();
+    local emblemColorPicker = self.Customizations.EmblemColorPicker;
+
+    local function Generator(dropdown, rootDescription)
+        for i, choice in pairs(choices) do
+            local displayTemplate = rootDescription:CreateTemplate("TabardyNumberedColorSwatchTemplate");
+            displayTemplate:AddInitializer(function(frame, elementDescription, menu)
+                frame:Init({
+                    Selected = i == selectedEmblemColor,
+                    Index = i,
+                    Color = choice.Color,
+                });
+            end);
+        end
+    end
+
+    emblemColorPicker:SetupMenu(Generator);
+end
+
 function TabardyDesignerMixin:SetupCustomizationOptions()
+    if 1 == 1 then
+        self:PopulateEmblemColors();
+        return;
+    end
+
     local customizations = self.Customizations;
     customizations.IconPicker:SetLabel(EMBLEM_SYMBOL);
     customizations.IconColorPicker:SetLabel(EMBLEM_SYMBOL_COLOR);
@@ -405,31 +449,6 @@ function TabardyDesignerMixin:SetupCustomizationOptions()
         local selectedEmblem = self:GetSelectedEmblemIndex();
         emblemOptionData.CurrentChoiceIndex = selectedEmblem;
         customizations.IconPicker:SetupOption(emblemOptionData);
-    end
-
-    do
-        local allEmblemColors = Tabardy.GetAllEmblemColors();
-        local emblemColorOptionData = {
-            Name = "Emblem Color",
-            CurrentChoiceIndex = 1,
-            Choices = {},
-        };
-
-        for emblemColorID, colorInfo in pairs(allEmblemColors) do
-            emblemColorID = emblemColorID + 1;
-            local choice = {
-                Name = "",
-                Color = Tabardy.GetEmblemColor(emblemColorID - 1),
-                ColorID = emblemColorID,
-            };
-            tinsert(emblemColorOptionData.Choices, choice);
-        end
-
-        table.sort(emblemColorOptionData.Choices, SortColors);
-
-        local selectedEmblemColor = self:GetSelectedEmblemColorIndex();
-        emblemColorOptionData.CurrentChoiceIndex = selectedEmblemColor;
-        customizations.IconColorPicker:SetupOption(emblemColorOptionData);
     end
 
     do

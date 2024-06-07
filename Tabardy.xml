@@ -1,133 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-    <Frame name="TabardyDesignerPopoutDetailsTemplate"
-        mixin="TabardyDesignerPopoutDetailsMixin" virtual="true">
-        <KeyValues>
-            <KeyValue key="selectable" value="true" type="boolean" />
-        </KeyValues>
-        <Layers>
-            <Layer level="ARTWORK" textureSubLevel="1">
-                <FontString parentKey="SelectionNumberBG" font="GameFontNormal_NoShadow"
-                    justifyH="LEFT">
-                    <KeyValues>
-                        <KeyValue key="ignoreInLayout" value="true" type="boolean" />
-                    </KeyValues>
-                    <Size x="25" y="20" />
-                    <Color color="NEW_FEATURE_SHADOW_COLOR" />
-                    <Anchors>
-                        <Anchor point="LEFT" x="0.5" y="-0.5" />
-                    </Anchors>
-                </FontString>
-                <FontString parentKey="SelectionNumber" font="GameFontNormal" justifyH="LEFT">
-                    <Size x="25" y="20" />
-                    <Anchors>
-                        <Anchor point="LEFT" />
-                    </Anchors>
-                    <Shadow>
-                        <Color color="NEW_FEATURE_SHADOW_COLOR" />
-                    </Shadow>
-                </FontString>
-                <FontString parentKey="SelectionName" font="GameFontNormal" justifyH="LEFT"
-                    maxLines="1" hidden="true">
-                    <Size x="25" y="20" />
-                    <Anchors>
-                        <Anchor point="LEFT" relativeKey="$parent.SelectionNumber"
-                            relativePoint="RIGHT" />
-                    </Anchors>
-                </FontString>
-                <Texture parentKey="ColorSwatch" atlas="charactercreate-customize-palette"
-                    useAtlasSize="true" hidden="true">
-                    <Anchors>
-                        <Anchor point="LEFT" relativeKey="$parent.SelectionNumber"
-                            relativePoint="RIGHT" />
-                    </Anchors>
-                </Texture>
-            </Layer>
-            <Layer level="ARTWORK" textureSubLevel="2">
-                <Texture parentKey="ColorSwatchGlow" atlas="charactercreate-customize-palette-glow"
-                    useAtlasSize="true" alphaMode="ADD" hidden="true">
-                    <Anchors>
-                        <Anchor point="CENTER" relativeKey="$parent.ColorSwatch1"
-                            relativePoint="CENTER" />
-                    </Anchors>
-                </Texture>
-            </Layer>
-            <Layer level="ARTWORK" textureSubLevel="3">
-                <Texture parentKey="ColorSelected"
-                    atlas="charactercreate-customize-palette-selected" useAtlasSize="true"
-                    hidden="true">
-                    <Anchors>
-                        <Anchor point="LEFT" relativeKey="$parent.ColorSwatch1" relativePoint="LEFT"
-                            x="-4" />
-                    </Anchors>
-                </Texture>
-            </Layer>
-        </Layers>
-    </Frame>
-
-    <Button name="TabardyDesignerPopoutEntryTemplate" inherits="SelectionPopoutEntryTemplate"
-        mixin="TabardyDesignerPopoutEntryMixin" virtual="true">
-        <KeyValues>
-            <KeyValue key="defaultWidth" value="116" type="number" />
-            <KeyValue key="" value="" />
-        </KeyValues>
-        <Frames>
-            <Frame parentKey="SelectionDetails"
-                inherits="TabardyDesignerPopoutDetailsTemplate">
-                <Size x="144" y="20" />
-                <Anchors>
-                    <Anchor point="TOPLEFT" x="14" y="0" />
-                </Anchors>
-            </Frame>
-        </Frames>
-        <Scripts>
-            <OnLoad method="OnLoad" />
-            <OnEnter method="OnEnter" />
-            <OnLeave method="OnLeave" />
-        </Scripts>
-    </Button>
-
-    <Frame name="TabardyDesignerCustomizationTemplate"
-        inherits="SelectionPopoutWithButtonsAndLabelTemplate"
-        mixin="TabardyDesignerCustomizationMixin" virtual="true">
-        <Frames>
-            <EventButton parentKey="Button" inherits="SelectionPopoutButtonTemplate"
-                mixin="TabardyDesignerPopoutButtonMixin">
-                <Size x="150" y="38" />
-                <Anchors>
-                    <Anchor point="CENTER" />
-                </Anchors>
-                <KeyValues>
-                    <KeyValue key="selectionEntryTemplates"
-                        value="TabardyDesignerPopoutEntryTemplate" type="string" />
-                </KeyValues>
-                <Frames>
-                    <Frame parentKey="SelectionDetails"
-                        inherits="TabardyDesignerPopoutDetailsTemplate, ResizeLayoutFrame">
-                        <Size x="144" y="20" />
-                        <Layers>
-                            <Layer>
-                                <Texture>
-                                    <Size x="20" y="20" />
-                                </Texture>
-                            </Layer>
-                        </Layers>
-                        <KeyValues>
-                            <KeyValue key="selectable" value="false" type="boolean" />
-                        </KeyValues>
-                        <Anchors>
-                            <Anchor point="CENTER" />
-                        </Anchors>
-                    </Frame>
-                </Frames>
-            </EventButton>
-        </Frames>
-        <Scripts>
-            <OnLoad method="OnLoad" />
-        </Scripts>
-    </Frame>
-
     <Frame name="TabardyDesigner" inherits="PortraitFrameFlatTemplate" mixin="TabardyDesignerMixin"
         parent="UIParent" movable="true" enableMouse="true" dontSavePosition="true" hidden="true">
         <Size x="600" y="700" />
@@ -197,41 +70,12 @@
                         relativePoint="TOPRIGHT" y="30" />
                 </Anchors>
                 <Frames>
-                    <Frame parentKey="BorderPicker"
-                        inherits="TabardyDesignerCustomizationTemplate" id="3">
+                    <DropdownButton parentKey="EmblemColorPicker"
+                        inherits="TabardyDropdownButtonTemplate" id="2">
                         <Anchors>
-                            <Anchor point="TOPRIGHT" />
+                            <Anchor point="TOP" />
                         </Anchors>
-                    </Frame>
-                    <Frame parentKey="BorderColorPicker"
-                        inherits="TabardyDesignerCustomizationTemplate" id="4">
-                        <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.BorderPicker"
-                                relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Frame>
-                    <Frame parentKey="IconPicker"
-                        inherits="TabardyDesignerCustomizationTemplate" id="1">
-                        <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.BorderColorPicker"
-                                relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Frame>
-                    <Frame parentKey="IconColorPicker"
-                        inherits="TabardyDesignerCustomizationTemplate" id="2">
-                        <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.IconPicker"
-                                relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Frame>
-
-                    <Frame parentKey="BackgroundPicker"
-                        inherits="TabardyDesignerCustomizationTemplate" id="5">
-                        <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.IconColorPicker"
-                                relativePoint="BOTTOM" />
-                        </Anchors>
-                    </Frame>
+                    </DropdownButton>
                 </Frames>
             </Frame>
             <Frame parentKey="EmblemContainer">
