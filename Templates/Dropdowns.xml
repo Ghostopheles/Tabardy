@@ -4,8 +4,9 @@
     <Script file="Dropdowns.lua" />
 
     <!-- This template is just used to display a single number + swatch -->
-    <Frame name="TabardyNumberedColorSwatchTemplate" mixin="TabardyNumberedColorSwatchMixin"
+    <Button name="TabardyNumberedColorSwatchTemplate" mixin="TabardyNumberedColorSwatchMixin"
         virtual="true">
+        <Size x="100" y="20" />
         <Layers>
             <Layer level="ARTWORK" textureSubLevel="1">
                 <FontString parentKey="Text" font="GameFontWhite"
@@ -38,7 +39,10 @@
                 </Texture>
             </Layer>
         </Layers>
-    </Frame>
+        <Scripts>
+            <OnClick method="OnClick" />
+        </Scripts>
+    </Button>
 
     <DropdownButton name="TabardyDropdownButtonTemplate" mixin="TabardyDropdownButtonMixin"
         virtual="true">
@@ -72,12 +76,12 @@
             </Layer>
         </Layers>
         <Frames>
-            <Frame parentKey="SelectedDisplay" inherits="TabardyNumberedColorSwatchTemplate">
+            <Button parentKey="SelectedDisplay" inherits="TabardyNumberedColorSwatchTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" x="6" y="-2" />
                     <Anchor point="BOTTOMRIGHT" x="-6" y="2" />
                 </Anchors>
-            </Frame>
+            </Button>
         </Frames>
         <Scripts>
             <OnLoad method="OnLoad" />

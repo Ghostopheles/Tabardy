@@ -3,8 +3,12 @@
 Tabardy.Debug = true;
 
 local CUSTOMIZATION_TYPE = {
-    EMBLEM_COLOR = 3,
-}
+    EMBLEM = 1,
+    EMBLEM_COLOR = 2,
+    BORDER = 3,
+    BORDER_COLOR = 4,
+    BACKGROUND = 5,
+};
 
 ------------
 
@@ -366,7 +370,6 @@ function TabardyDesignerMixin:PopulateEmblemColors()
     local emblemColorPicker = self.Customizations.EmblemColorPicker;
 
     local function Responder(elementData, ...)
-        print("responding!");
         TabardyDesigner:SetCustomization(elementData.Type, elementData.Index);
     end
 
@@ -382,11 +385,7 @@ function TabardyDesignerMixin:PopulateEmblemColors()
             local displayTemplate = rootDescription:CreateTemplate("TabardyNumberedColorSwatchTemplate");
             displayTemplate:AddInitializer(function(frame, elementDescription, menu)
                 frame:Init(data);
-                frame:SetMouseClickEnabled(false);
-                frame:SetMouseMotionEnabled(false);
-                frame:RegisterForClicks();
-                frame:RegisterForMouse();
-                return 100, 20;
+                frame:SetElementDescription(elementDescription);
             end);
             displayTemplate:SetData(data);
             displayTemplate:SetResponder(Responder);

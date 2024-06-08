@@ -7,6 +7,16 @@ function TabardyNumberedColorSwatchMixin:Init(data)
     self:Update();
 end
 
+function TabardyNumberedColorSwatchMixin:OnClick(buttonName)
+    if self.ElementDescription then
+        self.ElementDescription:Pick(MenuInputContext.MouseButton, buttonName);
+    end
+end
+
+function TabardyNumberedColorSwatchMixin:SetElementDescription(elementDescription)
+    self.ElementDescription = elementDescription;
+end
+
 function TabardyNumberedColorSwatchMixin:Update()
     self:SetNumber(self.Index);
     self:SetSwatchColor(self.Color);
@@ -47,6 +57,8 @@ function TabardyDropdownButtonMixin:OnLoad()
 
     self.SelectedDisplay:SetSwatchColor(TRANSMOGRIFY_FONT_COLOR);
     self.SelectedDisplay:SetSelectedTextureShown(false);
+    self.SelectedDisplay:SetMouseClickEnabled(false);
+    self.SelectedDisplay:SetMouseMotionEnabled(false);
 end
 
 function TabardyDropdownButtonMixin:SetLabel(text)
