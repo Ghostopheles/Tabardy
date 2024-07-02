@@ -27,8 +27,8 @@
                 <Texture parentKey="ColorSwatch" atlas="charactercreate-customize-palette"
                     useAtlasSize="true">
                     <Anchors>
-                        <Anchor point="RIGHT"
-                            relativePoint="RIGHT" x="-5" />
+                        <Anchor point="LEFT"
+                            relativePoint="RIGHT" relativeKey="$parent.Text" x="35" />
                     </Anchors>
                 </Texture>
             </Layer>
@@ -44,6 +44,77 @@
                 </Texture>
             </Layer>
         </Layers>
+        <Scripts>
+            <OnClick method="OnClick" />
+        </Scripts>
+    </Button>
+
+    <Button name="TabardyNumberedEntryTemplate" mixin="TabardyNumberedEntryMixin"
+        virtual="true">
+        <Size x="20" y="20" />
+        <Layers>
+            <Layer level="HIGHLIGHT">
+                <Texture parentKey="HighlightTexture" setAllPoints="true">
+                    <Color r="1" g="1" b="1" a="0.15" />
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="1">
+                <FontString parentKey="Text" font="GameFontWhite"
+                    justifyH="LEFT">
+                    <Anchors>
+                        <Anchor point="LEFT" x="5" />
+                    </Anchors>
+                    <Shadow>
+                        <Color color="NEW_FEATURE_SHADOW_COLOR" />
+                    </Shadow>
+                </FontString>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="3">
+                <Texture parentKey="SelectedTexture"
+                    atlas="charactercreate-customize-palette-selected" useAtlasSize="true"
+                    hidden="true">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.Text"
+                            relativePoint="LEFT"
+                            x="-4" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnClick method="OnClick" />
+        </Scripts>
+    </Button>
+
+    <Button name="TabardyEmblemEntryTemplate" mixin="TabardyNumberedEntryMixin"
+        virtual="true">
+        <Size x="20" y="20" />
+        <Layers>
+            <Layer level="HIGHLIGHT">
+                <Texture parentKey="HighlightTexture" setAllPoints="true">
+                    <Color r="1" g="1" b="1" a="0.15" />
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="1">
+                <FontString parentKey="Text" font="GameFontWhite"
+                    justifyH="LEFT">
+                    <Anchors>
+                        <Anchor point="LEFT" x="5" />
+                    </Anchors>
+                    <Shadow>
+                        <Color color="NEW_FEATURE_SHADOW_COLOR" />
+                    </Shadow>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame parentKey="Emblem" inherits="TabardyEmblemContainerTemplate">
+                <Size x="50" y="45" />
+                <Anchors>
+                    <Anchor point="LEFT" relativeKey="$parent.Text" relativePoint="RIGHT" x="10" />
+                </Anchors>
+            </Frame>
+        </Frames>
         <Scripts>
             <OnClick method="OnClick" />
         </Scripts>
@@ -80,14 +151,6 @@
                 </FontString>
             </Layer>
         </Layers>
-        <Frames>
-            <Button parentKey="SelectedDisplay" inherits="TabardyNumberedColorSwatchTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" x="6" y="-2" />
-                    <Anchor point="BOTTOMRIGHT" x="-6" y="2" />
-                </Anchors>
-            </Button>
-        </Frames>
         <Scripts>
             <OnLoad method="OnLoad" />
             <OnShow method="OnShow" />
@@ -98,7 +161,36 @@
             <OnEnable method="OnEnable" />
             <OnDisable method="OnDisable" />
         </Scripts>
+    </DropdownButton>
 
+    <DropdownButton name="TabardyColorSwatchDropdownButtonTemplate"
+        inherits="TabardyDropdownButtonTemplate" virtual="true">
+        <Frames>
+            <Button parentKey="SelectedDisplay" inherits="TabardyNumberedColorSwatchTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="6" y="-2" />
+                    <Anchor point="BOTTOMRIGHT" x="-6" y="2" />
+                </Anchors>
+            </Button>
+        </Frames>
+    </DropdownButton>
+
+    <DropdownButton name="TabardyNumberedDropdownButtonTemplate"
+        inherits="TabardyDropdownButtonTemplate" virtual="true">
+        <Layers>
+            <Layer level="ARTWORK" textureSubLevel="1">
+                <FontString parentKey="Text" font="GameFontWhite"
+                    justifyH="CENTER">
+                    <Size x="25" y="20" />
+                    <Anchors>
+                        <Anchor point="CENTER" />
+                    </Anchors>
+                    <Shadow>
+                        <Color color="NEW_FEATURE_SHADOW_COLOR" />
+                    </Shadow>
+                </FontString>
+            </Layer>
+        </Layers>
     </DropdownButton>
 
 </Ui>

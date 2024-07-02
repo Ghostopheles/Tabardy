@@ -70,10 +70,17 @@
                         relativePoint="TOPRIGHT" y="30" />
                 </Anchors>
                 <Frames>
-                    <DropdownButton parentKey="EmblemColorPicker"
-                        inherits="TabardyDropdownButtonTemplate" id="2">
+                    <DropdownButton parentKey="EmblemPicker"
+                        inherits="TabardyNumberedDropdownButtonTemplate" id="1">
                         <Anchors>
                             <Anchor point="TOP" />
+                        </Anchors>
+                    </DropdownButton>
+                    <DropdownButton parentKey="EmblemColorPicker"
+                        inherits="TabardyColorSwatchDropdownButtonTemplate" id="2">
+                        <Anchors>
+                            <Anchor point="TOP" relativeKey="$parent.EmblemPicker"
+                                relativePoint="BOTTOM" y="-25" />
                         </Anchors>
                     </DropdownButton>
                 </Frames>

@@ -51,6 +51,19 @@ function Tabardy.GetFileIDForEmblemAndColor(emblemID, colorID)
     end
 end
 
+function Tabardy.GetTexturesForEmblemAndColor(emblemID, colorID)
+    local emblems = Data.Emblems;
+
+    local fdids = {};
+    for fdid, emblemInfo in pairs(emblems) do
+        if emblemInfo.EmblemID == emblemID and emblemInfo.Color == colorID then
+            tinsert(fdids, fdid);
+        end
+    end
+
+    return fdids;
+end
+
 ---@param fdid number EmblemFileID
 function Tabardy.GetEmblemID(fdid)
     local emblem = Data.Emblems[fdid];
