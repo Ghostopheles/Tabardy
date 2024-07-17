@@ -106,6 +106,17 @@
                     </Shadow>
                 </FontString>
             </Layer>
+            <Layer level="ARTWORK" textureSubLevel="3">
+                <Texture parentKey="SelectedTexture"
+                    atlas="charactercreate-customize-palette-selected" useAtlasSize="true"
+                    hidden="true">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.Text"
+                            relativePoint="LEFT"
+                            x="-4" />
+                    </Anchors>
+                </Texture>
+            </Layer>
         </Layers>
         <Frames>
             <Frame parentKey="Emblem" inherits="TabardyEmblemContainerTemplate">

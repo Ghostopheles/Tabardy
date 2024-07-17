@@ -92,6 +92,7 @@ end
 function TabardyEmblemEntryMixin:Update()
     self:SetNumber(self.Index);
     self:SetEmblem(self.EmblemID);
+    self.SelectedTexture:SetShown(self.IsSelected);
 end
 
 function TabardyEmblemEntryMixin:SetNumber(number)
@@ -119,6 +120,11 @@ function TabardyDropdownButtonMixin:OnLoad()
 
     self.EnabledTextColor = WHITE_FONT_COLOR;
     self.DisabledTextColor = DISABLED_FONT_COLOR;
+
+    self.ResetButton = {
+        SetScript = nop,
+        Hide = nop
+    };
 
     WowStyle2DropdownMixin.OnLoad(self); -- call original OnLoad
 end

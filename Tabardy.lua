@@ -513,38 +513,8 @@ function TabardyDesignerMixin:SetupCustomizationOptions()
     self:PopulateEmblems();
     self:PopulateEmblemColors();
     self:PopulateBackgrounds();
-
-    if 1 == 1 then
-        return;
-    end
-
-    do
-        local borderPicker = self.Customizations.BorderPicker;
-        local borderColorPicker = self.Customizations.BorderColorPicker;
-        local pickers = {
-            borderPicker,
-            borderColorPicker,
-        };
-        for _, picker in pairs(pickers) do
-            picker.Button:Disable();
-            picker.DecrementButton:SetScript("OnClick", function(self, _)
-                TabardyDesigner:CycleCustomization(self:GetParent():GetID(), -1);
-            end);
-            picker.IncrementButton:SetScript("OnClick", function(self, _)
-                TabardyDesigner:CycleCustomization(self:GetParent():GetID(), 1);
-            end);
-
-            picker.Button:Hide();
-            picker.DecrementButton:ClearAllPoints();
-            picker.DecrementButton:SetPoint("RIGHT", picker, "CENTER", -5, 0);
-
-            picker.IncrementButton:ClearAllPoints();
-            picker.IncrementButton:SetPoint("LEFT", picker, "CENTER", 5, 0);
-
-            picker.Label:ClearAllPoints();
-            picker.Label:SetPoint("RIGHT", picker, "LEFT", -35, 0);
-        end
-    end
+    self.Customizations.BorderPicker.Label:SetText("Border");
+    self.Customizations.BorderColorPicker.Label:SetText("Border Color");
 end
 
 function TabardyDesignerMixin:CycleCustomization(id, amount)

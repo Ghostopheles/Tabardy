@@ -14,6 +14,7 @@
 
 Templates/EmblemContainer.xml
 Templates/Dropdowns.xml
+Templates/ButtonPair.xml
 
 TabardyData.lua
 Tabardy.lua

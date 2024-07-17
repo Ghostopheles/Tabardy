@@ -1,0 +1,76 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+    <Script file="ButtonPair.lua" />
+
+    <Button name="TabardySimpleForwardOrBackwardSmallButtonTemplate"
+        mixin="TabardySimpleForwardOrBackwardSmallButtonMixin" virtual="true">
+        <Size x="26" y="25" />
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background">
+                    <Anchors>
+                        <Anchor point="CENTER" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <Texture parentKey="Icon" scale="0.75">
+                    <Anchors>
+                        <Anchor point="CENTER" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnMouseDown method="OnMouseDown" />
+            <OnMouseUp method="OnMouseUp" />
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+            <OnEnable method="OnEnable" />
+            <OnDisable method="OnDisable" />
+        </Scripts>
+    </Button>
+
+    <Frame name="TabardyButtonPairTemplate" mixin="TabardyButtonPairMixin" virtual="true">
+        <Size x="75" y="25" />
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Label" font="GameFontWhite">
+                    <Anchors>
+                        <Anchor point="CENTER" relativePoint="TOP" y="10" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button parentKey="IncrementButton"
+                inherits="TabardySimpleForwardOrBackwardSmallButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" />
+                </Anchors>
+                <KeyValues>
+                    <KeyValue key="normalAtlas" type="string" value="common-dropdown-icon-next" />
+                    <KeyValue key="disabledAtlas" type="string"
+                        value="common-dropdown-icon-next-disabled" />
+                </KeyValues>
+            </Button>
+            <Button parentKey="DecrementButton"
+                inherits="TabardySimpleForwardOrBackwardSmallButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" />
+                </Anchors>
+                <KeyValues>
+                    <KeyValue key="normalAtlas" type="string" value="common-dropdown-icon-back" />
+                    <KeyValue key="disabledAtlas" type="string"
+                        value="common-dropdown-icon-back-disabled" />
+                </KeyValues>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Frame>
+
+</Ui>
