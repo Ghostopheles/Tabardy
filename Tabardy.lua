@@ -1,229 +1,14 @@
 ------------
 
-TabardyDesignerPopoutDetailsMixin = {};
+Tabardy.Debug = true;
 
-function TabardyDesignerPopoutDetailsMixin:AdjustWidth(multipleColumns, defaultWidth)
-	local width = defaultWidth;
-
-	if self.ColorSwatch:IsShown() then
-		if multipleColumns then
-			width = self.SelectionNumber:GetWidth() + self.ColorSwatch:GetWidth() + 18;
-		end
-	elseif self.SelectionName:IsShown() then
-		if multipleColumns then
-			width = 108;
-		end
-	else
-		if multipleColumns then
-			width = 42;
-		end
-	end
-
-	self:SetWidth(Round(width));
-end
-
-local function GetNormalSelectionTextFontColor(selectionData, isSelected)
-	if isSelected then
-		return NORMAL_FONT_COLOR;
-	else
-		return DISABLED_FONT_COLOR;
-	end
-end
-
-function TabardyDesignerPopoutDetailsMixin:GetFontColors(selectionData, isSelected)
-	if self.selectable then
-		local fontColor = GetNormalSelectionTextFontColor(selectionData, isSelected);
-		return fontColor, fontColor;
-	else
-		return NORMAL_FONT_COLOR, NORMAL_FONT_COLOR;
-	end
-end
-
-function TabardyDesignerPopoutDetailsMixin:UpdateFontColors(selectionData, isSelected)
-	local nameColor, numberColor = self:GetFontColors(selectionData, isSelected);
-	self.SelectionName:SetTextColor(nameColor:GetRGB());
-	self.SelectionNumber:SetTextColor(numberColor:GetRGB());
-end
-
-function TabardyDesignerPopoutDetailsMixin:UpdateText(selectionData, isSelected, hideNumber, hasColors)
-	self:UpdateFontColors(selectionData, isSelected);
-
-	self.SelectionNumber:SetText(self.index);
-	self.SelectionNumberBG:SetText(self.index);
-
-	if hasColors then
-		self.SelectionName:Hide();
-		self.SelectionNumber:SetWidth(25);
-		self.SelectionNumberBG:SetWidth(25);
-	elseif selectionData.Name ~= "" then
-		self.SelectionName:Show();
-		self.SelectionName:SetWidth(0);
-		self.SelectionName:SetText(selectionData.Name);
-		self.SelectionNumber:SetWidth(25);
-		self.SelectionNumberBG:SetWidth(25);
-	else
-		self.SelectionName:Hide();
-		self.SelectionNumber:SetWidth(0);
-		self.SelectionNumberBG:SetWidth(0);
-	end
-
-	self.SelectionNumber:SetShown(not hideNumber);
-end
-
-function TabardyDesignerPopoutDetailsMixin:SetupDetails(selectionData, index, isSelected)
-	if not index then
-		self.SelectionName:SetText(CHARACTER_CUSTOMIZE_POPOUT_UNSELECTED_OPTION);
-		self.SelectionName:Show();
-		self.SelectionName:SetWidth(0);
-		self.SelectionName:SetPoint("LEFT", self, "LEFT", 0, 0);
-		self.SelectionNumber:Hide();
-		self.SelectionNumberBG:Hide();
-		self.ColorSwatch:Hide();
-		self.ColorSwatchGlow:Hide();
-		return;
-	end
-	self.name = selectionData.Name;
-	self.index = index;
-
-	local color = selectionData.Color;
-	if color then
-		self.ColorSwatch:Show();
-		self.ColorSwatchGlow:Show();
-		self.ColorSwatch:SetVertexColor(color:GetRGB());
-	elseif selectionData.Name ~= "" then
-		self.ColorSwatch:Hide();
-		self.ColorSwatchGlow:Hide();
-	else
-		self.ColorSwatch:Hide();
-		self.ColorSwatchGlow:Hide();
-	end
-
-	self.ColorSelected:SetShown(self.selectable and color and isSelected);
-
-	local hideNumber = false;
-	if hideNumber then
-		self.SelectionName:SetPoint("LEFT", self, "LEFT", 0, 0);
-		self.ColorSwatch:SetPoint("LEFT", self, "LEFT", 0, 0);
-	else
-		self.SelectionName:SetPoint("LEFT", self.SelectionNumber, "RIGHT", 0, 0);
-		self.ColorSwatch:SetPoint("LEFT", self.SelectionNumber, "RIGHT", 0, 0);
-	end
-
-	if self.selectable then
-		self.SelectionName:SetPoint("RIGHT", 0, 0);
-	end
-
-	self:UpdateText(selectionData, isSelected, hideNumber, color);
-end
-
-------------
-
-TabardyDesignerPopoutEntryMixin = CreateFromMixins(SelectionPopoutEntryMixin);
-
-function TabardyDesignerPopoutEntryMixin:OnLoad()
-	SelectionPopoutEntryMixin.OnLoad(self);
-
-	self.SelectionDetails.SelectionName:SetPoint("RIGHT");
-end
-
-function TabardyDesignerPopoutEntryMixin:SetupEntry(selectionData, index, isSelected, multipleColumns)
-	SelectionPopoutEntryMixin.SetupEntry(self, selectionData, index, isSelected, multipleColumns);
-end
-
-function TabardyDesignerPopoutEntryMixin:OnEnter()
-	SelectionPopoutEntryMixin.OnEnter(self);
-
-	if not self.isSelected then
-		self.HighlightBGTex:SetAlpha(0.15);
-
-		self.SelectionDetails.SelectionNumber:SetTextColor(HIGHLIGHT_FONT_COLOR:GetRGB());
-		self.SelectionDetails.SelectionName:SetTextColor(HIGHLIGHT_FONT_COLOR:GetRGB());
-	end
-end
-
-function TabardyDesignerPopoutEntryMixin:OnLeave()
-	SelectionPopoutEntryMixin.OnLeave(self);
-
-	if not self.isSelected then
-		self.HighlightBGTex:SetAlpha(0);
-		self.SelectionDetails:UpdateFontColors(self.selectionData, self.isSelected);
-	end
-end
-
-------------
-
-TabardyDesignerPopoutButtonMixin = CreateFromMixins(SelectionPopoutButtonMixin);
-
-function TabardyDesignerPopoutButtonMixin:UpdateButtonDetails()
-	local currentSelectedData = self:GetCurrentSelectedData();
-	self.SelectionDetails:SetupDetails(currentSelectedData, self.selectedIndex);
-
-	local maxNameWidth = 126;
-	if self.SelectionDetails.SelectionName:GetWidth() > maxNameWidth then
-		self.SelectionDetails.SelectionName:SetWidth(maxNameWidth);
-	end
-
-	self.SelectionDetails:Layout();
-end
-
-------------
-
-TabardyDesignerCustomizationMixin = {};
-
-function TabardyDesignerCustomizationMixin:OnLoad_Custom()
-    SelectionPopoutWithButtonsAndLabelMixin.OnLoad(self);
-    self.Label:SetPoint("RIGHT", self.DecrementButton, "LEFT", -10, 0);
-end
-
-function TabardyDesignerCustomizationMixin:SetLabel(label)
-    self.Label:SetText(label);
-end
-
-function TabardyDesignerCustomizationMixin:SetupOption(optionData)
-	self:SetOptionData(optionData);
-	self:SetupSelections(optionData.Choices, optionData.CurrentChoiceIndex, optionData.Name);
-end
-
-function TabardyDesignerCustomizationMixin:SetOptionData(optionData)
-	self.optionData = optionData;
-end
-
-function TabardyDesignerCustomizationMixin:GetOptionData()
-	return self.optionData;
-end
-
-function TabardyDesignerCustomizationMixin:RefreshOption()
-	self:SetupOption(self:GetOptionData());
-end
-
-function TabardyDesignerCustomizationMixin:GetCurrentChoiceIndex()
-	return self:GetOptionData().currentChoiceIndex;
-end
-
-function TabardyDesignerCustomizationMixin:HasChoice()
-	return self:GetCurrentChoice() ~= nil;
-end
-
-function TabardyDesignerCustomizationMixin:GetChoice(index)
-	if index then
-		return self:GetOptionData().choices[index];
-	end
-end
-
-function TabardyDesignerCustomizationMixin:GetCurrentChoice()
-	return self:GetChoice(self:GetCurrentChoiceIndex());
-end
-
-local POPOUT_CLEARANCE = 100;
-
-function TabardyDesignerCustomizationMixin:GetMaxPopoutHeight()
-	return self:GetBottom() - POPOUT_CLEARANCE;
-end
-
-function TabardyDesignerCustomizationMixin:OnEntrySelected(entryData)
-    local designer = self:GetParent():GetParent();
-    designer:SetCustomization(self:GetID(), entryData);
-end
+local CUSTOMIZATION_TYPE = {
+    EMBLEM = 1,
+    EMBLEM_COLOR = 2,
+    BORDER = 3,
+    BORDER_COLOR = 4,
+    BACKGROUND = 5,
+};
 
 ------------
 
@@ -295,7 +80,7 @@ function TabardyDesignerMixin:OnEvent(event, ...)
 end
 
 function TabardyDesignerMixin:OnShow()
-    if not UnitExists("npc") then
+    if not UnitExists("npc") and not Tabardy.Debug then
         self:Hide();
         return;
     end
@@ -338,127 +123,171 @@ function TabardyDesignerMixin:Toggle()
     self:SetShown(not self:IsShown());
 end
 
-function TabardyDesignerMixin:SetupCustomizationOptions()
-    local customizations = self.Customizations;
-    customizations.IconPicker:SetLabel(EMBLEM_SYMBOL);
-    customizations.IconColorPicker:SetLabel(EMBLEM_SYMBOL_COLOR);
-    customizations.BorderPicker:SetLabel(EMBLEM_BORDER);
-    customizations.BorderColorPicker:SetLabel(EMBLEM_BORDER_COLOR);
-    customizations.BackgroundPicker:SetLabel(EMBLEM_BACKGROUND);
+function TabardyDesignerMixin:PopulateEmblems()
+    local allEmblems = Tabardy.GetAllEmblems();
+    local choices = {};
 
-    do
-        local allBackgrounds = Tabardy.GetAllBackgrounds();
-        local bgOptionData = {
-            Name = "Background",
-            CurrentChoiceIndex = 1,
-            Choices = {},
-        };
-
-        for bgFileID, bgInfo in pairs(allBackgrounds) do
-            if bgInfo.Component == 3 then
-                local choice = {
-                    Name = "",
-                    FileID = bgFileID,
-                    Color = Tabardy.GetBackgroundColor(bgInfo.Color),
-                };
-                tinsert(bgOptionData.Choices, choice);
-            end
+    local emblemsAdded = {};
+    for emblemFileID, emblemInfo in pairs(allEmblems) do
+        local emblemID = emblemInfo.EmblemID;
+        if emblemInfo.Component == 3 and not emblemsAdded[emblemID] then
+            local choice = {
+                FileID = emblemFileID,
+                EmblemID = emblemID
+            };
+            tinsert(choices, choice);
+            emblemsAdded[emblemID] = true;
         end
-
-        table.sort(bgOptionData.Choices, SortColors);
-        self.BackgroundFileIDToIndex = {};
-        for i, tbl in ipairs(bgOptionData.Choices) do
-            self.BackgroundFileIDToIndex[tbl.FileID] = i;
-        end
-
-        local selectedColor = self:GetSelectedBackgroundColorIndex();
-        bgOptionData.CurrentChoiceIndex = selectedColor;
-        customizations.BackgroundPicker:SetupOption(bgOptionData);
     end
 
-    do
-        local allEmblems = Tabardy.GetAllEmblems();
-        local emblemOptionData = {
-            Name = "Emblem",
-            CurrentChoiceIndex = 1,
-            Choices = {},
-        };
+    table.sort(choices, function(a, b) return a.EmblemID > b.EmblemID end);
 
-        self.EmblemIDToChoice = {};
-        for emblemFileID, emblemInfo in pairs(allEmblems) do
-            local emblemID = emblemInfo.EmblemID + 1;
-            if emblemInfo.Component == 3 and not self.EmblemIDToChoice[emblemID] then
-                local choice = {
-                    Name = "",
-                    FileID = emblemFileID,
-                    EmblemID = emblemID,
-                };
-                self.EmblemIDToChoice[emblemID] = choice;
+    local emblemPicker = self.Customizations.EmblemPicker;
+    emblemPicker:SetLabel("Emblem");
+
+    local function Generator(dropdown, rootDescription)
+        local columns = 10;
+        rootDescription:SetGridMode(MenuConstants.VerticalGridDirection, columns);
+
+        for i, choice in ipairs(choices) do
+            local data = {
+                Index = i, -- used for the number text on the menu entries
+                FileID = choice.FileID,
+                EmblemID = choice.EmblemID,
+                Type = CUSTOMIZATION_TYPE.EMBLEM,
+            };
+
+            local function IsSelected(elementData)
+                return elementData.EmblemID == self:GetSelectedEmblemID();
             end
-        end
 
-        table.sort(self.EmblemIDToChoice, function(a, b) return a.EmblemID > b.EmblemID end);
-        for _, v in pairs(self.EmblemIDToChoice) do
-            tinsert(emblemOptionData.Choices, v);
+            local buttonDescription = rootDescription:CreateTemplate("TabardyEmblemEntryTemplate", data);
+            buttonDescription:AddInitializer(function(button, elementDescription, menu)
+                local isSelected = IsSelected(data);
+                button:Init(data, elementDescription, isSelected);
+            end);
+            buttonDescription:SetResponder(function(elementData, menuInputData, menu)
+                self:SetCustomization(elementData.Type, elementData.EmblemID);
+                return MenuResponse.Refresh;
+            end);
+            buttonDescription:SetData(data);
+            buttonDescription:SetIsSelected(IsSelected);
         end
-
-        local selectedEmblem = self:GetSelectedEmblemIndex();
-        emblemOptionData.CurrentChoiceIndex = selectedEmblem;
-        customizations.IconPicker:SetupOption(emblemOptionData);
     end
 
-    do
-        local allEmblemColors = Tabardy.GetAllEmblemColors();
-        local emblemColorOptionData = {
-            Name = "Emblem Color",
-            CurrentChoiceIndex = 1,
-            Choices = {},
-        };
+    emblemPicker:SetupMenu(Generator);
+end
 
-        for emblemColorID, colorInfo in pairs(allEmblemColors) do
-            emblemColorID = emblemColorID + 1;
+function TabardyDesignerMixin:PopulateEmblemColors()
+    local allEmblemColors = Tabardy.GetAllEmblemColors();
+    local choices = {};
+
+    for emblemColorID, _ in ipairs(allEmblemColors) do
+        local choice = {
+            Name = "",
+            Color = Tabardy.GetEmblemColor(emblemColorID),
+            ColorID = emblemColorID,
+        };
+        tinsert(choices, choice);
+    end
+
+    table.sort(choices, SortColors);
+
+    local emblemColorPicker = self.Customizations.EmblemColorPicker;
+    emblemColorPicker:SetLabel("Emblem Color");
+
+    local function Generator(dropdown, rootDescription)
+        for i, choice in ipairs(choices) do
+            local data = {
+                Index = i, -- used for the number text on the menu entries
+                Color = choice.Color, -- color mixin
+                ColorID = choice.ColorID, -- used for lookups
+                Type = CUSTOMIZATION_TYPE.EMBLEM_COLOR,
+            };
+
+            local function IsSelected(elementData)
+                return elementData.ColorID == self:GetSelectedEmblemColorID();
+            end
+
+            local buttonDescription = rootDescription:CreateTemplate("TabardyNumberedColorSwatchTemplate", data);
+            buttonDescription:AddInitializer(function(button, elementDescription, menu)
+                local isSelected = IsSelected(data);
+                button:Init(data, elementDescription, isSelected);
+            end);
+            buttonDescription:SetResponder(function(elementData, menuInputData, menu)
+                self:SetCustomization(elementData.Type, elementData.ColorID);
+                return MenuResponse.Refresh;
+            end);
+            buttonDescription:SetData(data);
+            buttonDescription:SetIsSelected(IsSelected);
+        end
+    end
+
+    emblemColorPicker:SetupMenu(Generator);
+end
+
+function TabardyDesignerMixin:PopulateBackgrounds()
+    local allBackgrounds = Tabardy.GetAllBackgrounds();
+    local choices = {};
+    local added = {};
+
+    for fdid, bg in pairs(allBackgrounds) do
+        if not added[bg.Color] then
             local choice = {
                 Name = "",
-                Color = Tabardy.GetEmblemColor(emblemColorID - 1),
-                ColorID = emblemColorID,
+                FileID = fdid,
+                ColorID = bg.Color,
+                Color = Tabardy.GetBackgroundColor(bg.Color)
             };
-            tinsert(emblemColorOptionData.Choices, choice);
-        end
-
-        table.sort(emblemColorOptionData.Choices, SortColors);
-
-        local selectedEmblemColor = self:GetSelectedEmblemColorIndex();
-        emblemColorOptionData.CurrentChoiceIndex = selectedEmblemColor;
-        customizations.IconColorPicker:SetupOption(emblemColorOptionData);
-    end
-
-    do
-        local borderPicker = self.Customizations.BorderPicker;
-        local borderColorPicker = self.Customizations.BorderColorPicker;
-        local pickers = {
-            borderPicker,
-            borderColorPicker,
-        };
-        for _, picker in pairs(pickers) do
-            picker.Button:Disable();
-            picker.DecrementButton:SetScript("OnClick", function(self, _)
-                TabardyDesigner:CycleCustomization(self:GetParent():GetID(), -1);
-            end);
-            picker.IncrementButton:SetScript("OnClick", function(self, _)
-                TabardyDesigner:CycleCustomization(self:GetParent():GetID(), 1);
-            end);
-
-            picker.Button:Hide();
-            picker.DecrementButton:ClearAllPoints();
-            picker.DecrementButton:SetPoint("RIGHT", picker, "CENTER", -5, 0);
-
-            picker.IncrementButton:ClearAllPoints();
-            picker.IncrementButton:SetPoint("LEFT", picker, "CENTER", 5, 0);
-
-            picker.Label:ClearAllPoints();
-            picker.Label:SetPoint("RIGHT", picker, "LEFT", -35, 0);
+            tinsert(choices, choice);
+            added[bg.Color] = true;
         end
     end
+
+    table.sort(choices, SortColors);
+
+    local backgroundPicker = self.Customizations.BackgroundPicker;
+    backgroundPicker:SetLabel("Background");
+
+    local function Generator(dropdown, rootDescription)
+        local columns = 4;
+        rootDescription:SetGridMode(MenuConstants.VerticalGridDirection, columns);
+
+        for i, choice in ipairs(choices) do
+            local data = {
+                Index = i, -- used for the number text on the menu entries
+                Color = choice.Color, -- color mixin
+                ColorID = choice.ColorID,
+                Type = CUSTOMIZATION_TYPE.BACKGROUND,
+            };
+
+            local function IsSelected(elementData)
+                return elementData.ColorID == self:GetSelectedBackgroundColorID();
+            end
+
+            local buttonDescription = rootDescription:CreateTemplate("TabardyNumberedColorSwatchTemplate", data);
+            buttonDescription:AddInitializer(function(button, elementDescription, menu)
+                local isSelected = IsSelected(data);
+                button:Init(data, elementDescription, isSelected);
+            end);
+            buttonDescription:SetResponder(function(elementData, menuInputData, menu)
+                self:SetCustomization(elementData.Type, elementData.ColorID);
+                return MenuResponse.Refresh;
+            end);
+            buttonDescription:SetData(data);
+            buttonDescription:SetIsSelected(IsSelected);
+        end
+    end
+
+    backgroundPicker:SetupMenu(Generator);
+end
+
+function TabardyDesignerMixin:SetupCustomizationOptions()
+    self:PopulateEmblems();
+    self:PopulateEmblemColors();
+    self:PopulateBackgrounds();
+    self.Customizations.BorderPicker.Label:SetText("Border");
+    self.Customizations.BorderColorPicker.Label:SetText("Border Color");
 end
 
 function TabardyDesignerMixin:CycleCustomization(id, amount)
@@ -469,47 +298,47 @@ end
 
 function TabardyDesignerMixin:SetCustomization(id, target)
     local distance;
-    if id == 1 then
-        distance = self:GetEmblemDistance(target.EmblemID);
-    elseif id == 2 then
-        distance = self:GetEmblemColorDistance(target.ColorID);
-    elseif id == 3 or id == 4 then
+    if id == CUSTOMIZATION_TYPE.EMBLEM then
+        distance = self:GetEmblemDistance(target);
+    elseif id == CUSTOMIZATION_TYPE.EMBLEM_COLOR then
+        distance = self:GetEmblemColorDistance(target);
+    elseif id == CUSTOMIZATION_TYPE.BORDER or id == CUSTOMIZATION_TYPE.BORDER_COLOR then
         return self:CycleCustomization(id, 1);
-    elseif id == 5 then
-        distance = self:GetBackgroundDistance(target.FileID);
+    elseif id == CUSTOMIZATION_TYPE.BACKGROUND then
+        distance = self:GetBackgroundDistance(target);
     end
     self:CycleCustomization(id, distance);
 end
 
-function TabardyDesignerMixin:GetSelectedBackgroundColorIndex()
+function TabardyDesignerMixin:GetSelectedBackgroundColorID()
     local bgFile = self.Model:GetUpperBackgroundFileName();
-    return self.BackgroundFileIDToIndex[bgFile];
+    return Tabardy.GetColorIDForBackground(bgFile);
 end
 
-function TabardyDesignerMixin:GetSelectedEmblemIndex()
+function TabardyDesignerMixin:GetSelectedEmblemID()
     local emblemFile = self.Model:GetUpperEmblemFile();
-    local emblemID = Tabardy.GetEmblemID(emblemFile);
-    return emblemID + 1;
+    return Tabardy.GetEmblemID(emblemFile);
 end
 
-function TabardyDesignerMixin:GetSelectedEmblemColorIndex()
+function TabardyDesignerMixin:GetSelectedEmblemColorID()
     local emblemFile = self.Model:GetUpperEmblemFile();
-    return Tabardy.GetColorIDForEmblem(emblemFile) + 1;
+    return Tabardy.GetColorIDForEmblem(emblemFile);
 end
 
 function TabardyDesignerMixin:GetBackgroundDistance(target)
     local current = self.Model:GetUpperBackgroundFileName();
-    return (target - current) / 2;
+    local currentID = Tabardy.GetColorIDForBackground(current);
+    return target - currentID;
 end
 
 function TabardyDesignerMixin:GetEmblemDistance(targetEmblemID)
-    local currentEmblemID = self:GetSelectedEmblemIndex();
+    local currentEmblemID = self:GetSelectedEmblemID();
     local distance = targetEmblemID - currentEmblemID;
     return distance;
 end
 
 function TabardyDesignerMixin:GetEmblemColorDistance(targetColorID)
-    local currentColorID = self:GetSelectedEmblemColorIndex();
+    local currentColorID = self:GetSelectedEmblemColorID();
     local distance = targetColorID - currentColorID;
     return distance;
 end

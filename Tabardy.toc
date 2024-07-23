@@ -1,4 +1,4 @@
-## Interface: 100207, 110000
+## Interface: 110000
 ## Title: |cfffc037bTabardy|r
 ## Notes: A redesign of the in-game tabard designer UI
 ## Author: Ghostopheles
@@ -11,6 +11,10 @@
 
 ## X-Curse-Project-ID: 1016691
 ## X-Wago-ID: QKywQaN7
+
+Templates/EmblemContainer.xml
+Templates/Dropdowns.xml
+Templates/ButtonPair.xml
 
 TabardyData.lua
 Tabardy.lua
