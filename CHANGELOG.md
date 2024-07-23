@@ -1,3 +1,9 @@
+# v1.0.2
+
+- Added support for 11.0.0
+- Updated dropdowns to new dropdowns and menus
+- Removed all bugs, there are zero bugs left
+
 # v1.0.0
 
 - World's first tabard designer remake! (no idea if this is true)
