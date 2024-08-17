@@ -1,6 +1,16 @@
-------------
+local Events = {
+    PREVIEW_EMBLEM = "PREVIEW_EMBLEM",
+    RESET_EMBLEM = "RESET_EMBLEM"
+}
 
-Tabardy.Debug = true;
+local Registry = CreateFromMixins(CallbackRegistryMixin);
+Registry:OnLoad();
+Registry:GenerateCallbackEvents({
+    Events.PREVIEW_EMBLEM,
+    Events.RESET_EMBLEM
+});
+
+------------
 
 local CUSTOMIZATION_TYPE = {
     EMBLEM = 1,
@@ -69,6 +79,9 @@ function TabardyDesignerMixin:OnLoad()
     self.Model:SetHitRectInsets(0, 0, 0, 30);
 
     RunNextFrame(function() tinsert(UISpecialFrames, self:GetName()) end);
+
+    Registry:RegisterCallback(Events.PREVIEW_EMBLEM, self.PreviewEmblem, self);
+    Registry:RegisterCallback(Events.RESET_EMBLEM, self.ResetEmblem, self);
 end
 
 function TabardyDesignerMixin:OnEvent(event, ...)
@@ -96,7 +109,7 @@ function TabardyDesignerMixin:OnShow()
         self.CostFrame:Hide();
     end
 
-    self:UpdateTextures();
+    self:PreviewEmblem();
     self:UpdateButtons();
 
     self:SetupCustomizationOptions();
@@ -172,7 +185,14 @@ function TabardyDesignerMixin:PopulateEmblems()
             end);
             buttonDescription:SetData(data);
             buttonDescription:SetIsSelected(IsSelected);
+            buttonDescription:SetOnEnter(function()
+                Registry:TriggerEvent(Events.PREVIEW_EMBLEM, data.EmblemID);
+            end);
         end
+
+        rootDescription:AddMenuReleasedCallback(function()
+            Registry:TriggerEvent(Events.RESET_EMBLEM);
+        end);
     end
 
     emblemPicker:SetupMenu(Generator);
@@ -220,7 +240,14 @@ function TabardyDesignerMixin:PopulateEmblemColors()
             end);
             buttonDescription:SetData(data);
             buttonDescription:SetIsSelected(IsSelected);
+            buttonDescription:SetOnEnter(function()
+                Registry:TriggerEvent(Events.PREVIEW_EMBLEM, nil, data.ColorID);
+            end);
         end
+
+        rootDescription:AddMenuReleasedCallback(function()
+            Registry:TriggerEvent(Events.RESET_EMBLEM);
+        end);
     end
 
     emblemColorPicker:SetupMenu(Generator);
@@ -293,7 +320,7 @@ end
 function TabardyDesignerMixin:CycleCustomization(id, amount)
     PlaySound(SOUNDKIT.GS_CHARACTER_CREATION_LOOK);
     self.Model:CycleVariation(id, amount);
-    self:UpdateTextures();
+    self:PreviewEmblem();
 end
 
 function TabardyDesignerMixin:SetCustomization(id, target)
@@ -374,13 +401,22 @@ function TabardyDesignerMixin:UpdateButtons()
     self.AcceptButton:SetEnabled(self.Model:CanSaveTabardNow());
 end
 
-function TabardyDesignerMixin:UpdateTextures()
-    local container = self.EmblemContainer;
+function TabardyDesignerMixin:PreviewEmblem(emblemID, colorID)
+    emblemID = emblemID or self:GetSelectedEmblemID();
+    colorID = colorID or self:GetSelectedEmblemColorID();
+    local textures = Tabardy.GetTexturesForEmblemAndColor(emblemID, colorID);
+    table.sort(textures); -- why does this fix display problems? who knows, man - I'm not gonna bother figuring it out
 
-    self.Model:GetUpperEmblemTexture(container.TopLeft);
-    self.Model:GetUpperEmblemTexture(container.TopRight);
-    self.Model:GetLowerEmblemTexture(container.BottomLeft);
-    self.Model:GetLowerEmblemTexture(container.BottomRight);
+    local container = self.EmblemContainer;
+    container.TopLeft:SetTexture(textures[2]);
+    container.BottomLeft:SetTexture(textures[1]);
+
+    container.TopRight:SetTexture(textures[2]);
+    container.BottomRight:SetTexture(textures[1]);
+end
+
+function TabardyDesignerMixin:ResetEmblem()
+    self:PreviewEmblem();
 end
 
 function TabardyDesignerMixin:SaveTabard()
