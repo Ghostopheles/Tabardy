@@ -67,7 +67,7 @@
                 <Size x="200" y="200" />
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT" relativeKey="$parent.CostFrame"
-                        relativePoint="TOPRIGHT" y="30" />
+                        relativePoint="TOPRIGHT" x="-50" y="60" />
                 </Anchors>
                 <Frames>
                     <DropdownButton parentKey="EmblemPicker"
@@ -108,7 +108,7 @@
                 <Size x="200" y="193" />
                 <Anchors>
                     <Anchor point="BOTTOM" relativeKey="$parent.Customizations" relativePoint="TOP"
-                        x="-25" y="100" />
+                        y="100" />
                 </Anchors>
                 <Layers>
                     <Layer level="OVERLAY">
