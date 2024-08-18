@@ -181,7 +181,7 @@ function TabardyDesignerMixin:PopulateEmblems()
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.EmblemID);
-                return MenuResponse.Refresh;
+                return MenuResponse.Close;
             end);
             buttonDescription:SetData(data);
             buttonDescription:SetIsSelected(IsSelected);
@@ -236,7 +236,7 @@ function TabardyDesignerMixin:PopulateEmblemColors()
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.ColorID);
-                return MenuResponse.Refresh;
+                return MenuResponse.Close;
             end);
             buttonDescription:SetData(data);
             buttonDescription:SetIsSelected(IsSelected);
@@ -299,7 +299,7 @@ function TabardyDesignerMixin:PopulateBackgrounds()
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.ColorID);
-                return MenuResponse.Refresh;
+                return MenuResponse.Close;
             end);
             buttonDescription:SetData(data);
             buttonDescription:SetIsSelected(IsSelected);

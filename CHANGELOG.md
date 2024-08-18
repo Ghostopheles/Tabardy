@@ -3,6 +3,7 @@
 - Added emblem and color previews when mousing over the dropdown menu elements
   - I might expand this into also displaying the preview on the model but the ancient TabardModel APIs make it difficult. No promises.
 - Adjusted some frame positioning
+- Dropdowns will now close themselves after choosing an option
 - Removed an erroneous `Tabardy.Debug = true;`
 
 # v1.0.2
