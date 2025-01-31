@@ -29,8 +29,8 @@
         <Frames>
             <TabardModel parentKey="Model" inherits="ModelWithControlsTemplate">
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativePoint="TOP" x="60" />
-                    <Anchor point="BOTTOMLEFT" />
+                    <Anchor point="TOPLEFT" />
+                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" />
                 </Anchors>
                 <Scripts>
                     <OnMouseWheel function="nop" />

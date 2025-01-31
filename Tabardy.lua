@@ -1,7 +1,7 @@
 local Events = {
     PREVIEW_EMBLEM = "PREVIEW_EMBLEM",
     RESET_EMBLEM = "RESET_EMBLEM"
-}
+};
 
 local Registry = CreateFromMixins(CallbackRegistryMixin);
 Registry:OnLoad();
@@ -88,7 +88,7 @@ function TabardyDesignerMixin:OnEvent(event, ...)
     if event == "TABARD_CANSAVE_CHANGED" or event == "TABARD_SAVE_PENDING" then
         self:UpdateButtons();
     elseif event == "DISPLAY_SIZE_CHANGED" or event == "UI_SCALE_CHANGED" or event == "UNIT_MODEL_CHANGED" then
-        self.Model:SetUnit("player");
+        self:RefreshModel();
     end
 end
 
@@ -370,6 +370,12 @@ function TabardyDesignerMixin:GetEmblemColorDistance(targetColorID)
     return distance;
 end
 
+function TabardyDesignerMixin:ShouldUseNativeForm()
+    local _, raceFileName = UnitRace("player");
+    local useNativeForm = raceFileName ~= "Dracthyr";
+    return useNativeForm;
+end
+
 function TabardyDesignerMixin:LoadPortrait()
     local unit = UnitExists("npc") and "npc" or "player";
     SetPortraitTexture(self.PortraitContainer.portrait, unit);
@@ -377,7 +383,13 @@ end
 
 function TabardyDesignerMixin:LoadModel()
     self.Model:InitializeTabardColors();
-    self.Model:SetPosition(0, 0.3, 0);
+    self.Model:SetPosition(0, 0.7, 0);
+end
+
+function TabardyDesignerMixin:RefreshModel()
+    local blend = true;
+    local useNativeForm = self:ShouldUseNativeForm();
+    self.Model:SetUnit("player", blend, useNativeForm);
 end
 
 function TabardyDesignerMixin:UpdateButtons()
