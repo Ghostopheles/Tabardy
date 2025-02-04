@@ -147,7 +147,7 @@ function TabardyDropdownButtonMixin:SetLabel(text)
 end
 
 function TabardyDropdownButtonMixin:UpdateToMenuSelections(menuDescription, selection)
-    if not selection then
+    if not selection or not selection[1] then
         return;
     end
 
