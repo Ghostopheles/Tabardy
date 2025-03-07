@@ -90,18 +90,21 @@
                                 relativePoint="BOTTOM" y="-25" />
                         </Anchors>
                     </DropdownButton>
-                    <Frame parentKey="BorderPicker" inherits="TabardyButtonPairTemplate" id="3">
+                    <DropdownButton parentKey="BorderPicker"
+                        inherits="TabardyNumberedDropdownButtonTemplate"
+                        id="3">
                         <Anchors>
                             <Anchor point="TOP" relativeKey="$parent.BackgroundPicker"
                                 relativePoint="BOTTOM" y="-25" />
                         </Anchors>
-                    </Frame>
-                    <Frame parentKey="BorderColorPicker" inherits="TabardyButtonPairTemplate" id="4">
+                    </DropdownButton>
+                    <DropdownButton parentKey="BorderColorPicker"
+                        inherits="TabardyColorSwatchDropdownButtonTemplate" id="4">
                         <Anchors>
                             <Anchor point="TOP" relativeKey="$parent.BorderPicker"
                                 relativePoint="BOTTOM" y="-25" />
                         </Anchors>
-                    </Frame>
+                    </DropdownButton>
                 </Frames>
             </Frame>
             <Frame parentKey="EmblemContainer">

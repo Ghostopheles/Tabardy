@@ -85,3 +85,26 @@ end
 function Tabardy.GetAllEmblems()
     return Data.Emblems;
 end
+
+function Tabardy.GetAllBorders()
+    return Data.Borders;
+end
+
+function Tabardy.GetAllBorderColors()
+    return Data.BorderColors;
+end
+
+function Tabardy.GetBorderID(fdid)
+    local border = Data.Borders[fdid];
+    return border.BorderID;
+end
+
+function Tabardy.GetColorIDForBorder(fdid)
+    local border = Data.Borders[fdid];
+    return border.Color;
+end
+
+function Tabardy.GetBorderColor(colorID)
+    local color = Data.BorderColors[colorID].Color;
+    return CreateColor(color.Red / 255, color.Green / 255, color.Blue / 255);
+end

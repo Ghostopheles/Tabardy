@@ -1,14 +1,13 @@
 local Events = {
     PREVIEW_EMBLEM = "PREVIEW_EMBLEM",
-    RESET_EMBLEM = "RESET_EMBLEM"
+    RESET_EMBLEM = "RESET_EMBLEM",
+    PREVIEW_BORDER = "PREVIEW_BORDER",
+    RESET_BORDER = "RESET_BORDER",
 };
 
 local Registry = CreateFromMixins(CallbackRegistryMixin);
 Registry:OnLoad();
-Registry:GenerateCallbackEvents({
-    Events.PREVIEW_EMBLEM,
-    Events.RESET_EMBLEM
-});
+Registry:GenerateCallbackEvents(GetKeysArray(Events));
 
 ------------
 
@@ -309,12 +308,126 @@ function TabardyDesignerMixin:PopulateBackgrounds()
     backgroundPicker:SetupMenu(Generator);
 end
 
+function TabardyDesignerMixin:PopulateBorders()
+    local allBorders = Tabardy.GetAllBorders();
+    local choices = {};
+
+    local bordersAdded = {};
+    for borderFileID, borderInfo in pairs(allBorders) do
+        local borderID = borderInfo.BorderID;
+        if borderInfo.Component == 3 and not bordersAdded[borderID] then
+            local choice = {
+                FileID = borderFileID,
+                BorderID = borderID
+            };
+            tinsert(choices, choice);
+            bordersAdded[borderID] = true;
+        end
+    end
+
+    table.sort(choices, function(a, b) return a.BorderID > b.BorderID end);
+
+    local borderPicker = self.Customizations.BorderPicker;
+    borderPicker:SetLabel("Border");
+
+    local function Generator(dropdown, rootDescription)
+        for i, choice in ipairs(choices) do
+            local data = {
+                Index = i, -- used for the number text on the menu entries
+                FileID = choice.FileID,
+                BorderID = choice.BorderID,
+                Type = CUSTOMIZATION_TYPE.BORDER,
+            };
+
+            local function IsSelected(elementData)
+                return elementData.BorderID == self:GetSelectedBorderID();
+            end
+
+            local buttonDescription = rootDescription:CreateTemplate("TabardyEmblemEntryTemplate", data);
+            buttonDescription:AddInitializer(function(button, elementDescription, menu)
+                local isSelected = IsSelected(data);
+                button:Init(data, elementDescription, isSelected);
+            end);
+            buttonDescription:SetResponder(function(elementData, menuInputData, menu)
+                self:SetCustomization(elementData.Type, elementData.BorderID);
+                return MenuResponse.Close;
+            end);
+            buttonDescription:SetData(data);
+            buttonDescription:SetIsSelected(IsSelected);
+            buttonDescription:SetOnEnter(function()
+                Registry:TriggerEvent(Events.PREVIEW_BORDER, data.BorderID);
+            end);
+        end
+
+        rootDescription:AddMenuReleasedCallback(function()
+            Registry:TriggerEvent(Events.RESET_BORDER);
+        end);
+    end
+
+    borderPicker:SetupMenu(Generator);
+end
+
+function TabardyDesignerMixin:PopulateBorderColors()
+    local allBorderColors = Tabardy.GetAllBorderColors();
+    local choices = {};
+
+    for borderColorID, _ in ipairs(allBorderColors) do
+        local choice = {
+            Name = "",
+            Color = Tabardy.GetBorderColor(borderColorID),
+            ColorID = borderColorID,
+        };
+        tinsert(choices, choice);
+    end
+
+    table.sort(choices, SortColors);
+
+    local borderColorPicker = self.Customizations.BorderColorPicker;
+    borderColorPicker:SetLabel("Border Color");
+
+    local function Generator(dropdown, rootDescription)
+        for i, choice in ipairs(choices) do
+            local data = {
+                Index = i, -- used for the number text on the menu entries
+                Color = choice.Color, -- color mixin
+                ColorID = choice.ColorID, -- used for lookups
+                Type = CUSTOMIZATION_TYPE.BORDER_COLOR,
+            };
+
+            local function IsSelected(elementData)
+                return elementData.ColorID == self:GetSelectedBorderColorID();
+            end
+
+            local buttonDescription = rootDescription:CreateTemplate("TabardyNumberedColorSwatchTemplate", data);
+            buttonDescription:AddInitializer(function(button, elementDescription, menu)
+                local isSelected = IsSelected(data);
+                button:Init(data, elementDescription, isSelected);
+            end);
+            buttonDescription:SetResponder(function(elementData, menuInputData, menu)
+                self:SetCustomization(elementData.Type, elementData.ColorID);
+                return MenuResponse.Close;
+            end);
+            buttonDescription:SetData(data);
+            buttonDescription:SetIsSelected(IsSelected);
+            buttonDescription:SetOnEnter(function()
+                Registry:TriggerEvent(Events.PREVIEW_BORDER, nil, data.ColorID);
+            end);
+        end
+
+        rootDescription:AddMenuReleasedCallback(function()
+            Registry:TriggerEvent(Events.RESET_BORDER);
+        end);
+    end
+
+    borderColorPicker:SetupMenu(Generator);
+end
+
 function TabardyDesignerMixin:SetupCustomizationOptions()
     self:PopulateEmblems();
     self:PopulateEmblemColors();
     self:PopulateBackgrounds();
-    self.Customizations.BorderPicker.Label:SetText("Border");
-    self.Customizations.BorderColorPicker.Label:SetText("Border Color");
+    self:PopulateBorders();
+    self:PopulateBorderColors();
 end
 
 function TabardyDesignerMixin:CycleCustomization(id, amount)
@@ -329,8 +442,10 @@ function TabardyDesignerMixin:SetCustomization(id, target)
         distance = self:GetEmblemDistance(target);
     elseif id == CUSTOMIZATION_TYPE.EMBLEM_COLOR then
         distance = self:GetEmblemColorDistance(target);
-    elseif id == CUSTOMIZATION_TYPE.BORDER or id == CUSTOMIZATION_TYPE.BORDER_COLOR then
-        return self:CycleCustomization(id, 1);
+    elseif id == CUSTOMIZATION_TYPE.BORDER then
+        distance = self:GetBorderDistance(target);
+    elseif id == CUSTOMIZATION_TYPE.BORDER_COLOR then
+        distance = self:GetBorderColorDistance(target);
     elseif id == CUSTOMIZATION_TYPE.BACKGROUND then
         distance = self:GetBackgroundDistance(target);
     end
@@ -352,6 +467,16 @@ function TabardyDesignerMixin:GetSelectedEmblemColorID()
     return Tabardy.GetColorIDForEmblem(emblemFile);
 end
 
+function TabardyDesignerMixin:GetSelectedBorderID()
+    local borderFile = self.Model:GetUpperBorderFile();
+    return Tabardy.GetBorderID(borderFile);
+end
+
+function TabardyDesignerMixin:GetSelectedBorderColorID()
+    local borderFile = self.Model:GetUpperBorderFile();
+    return Tabardy.GetColorIDForBorder(borderFile);
+end
+
 function TabardyDesignerMixin:GetBackgroundDistance(target)
     local current = self.Model:GetUpperBackgroundFileName();
     local currentID = Tabardy.GetColorIDForBackground(current);
@@ -367,6 +492,20 @@ end
 function TabardyDesignerMixin:GetEmblemColorDistance(targetColorID)
     local currentColorID = self:GetSelectedEmblemColorID();
     local distance = targetColorID - currentColorID;
+    return distance;
+end
+
+--TODO: this does not work
+function TabardyDesignerMixin:GetBorderDistance(target)
+    local current = self:GetSelectedBorderID();
+    local distance = target - current;
+    return distance;
+end
+
+function TabardyDesignerMixin:GetBorderColorDistance(target)
+    local current = self.Model:GetUpperBorderFile();
+    local currentID = Tabardy.GetColorIDForBorder(current);
+    local distance = target - currentID;
     return distance;
 end
 
