@@ -3,6 +3,8 @@ local Events = {
     RESET_EMBLEM = "RESET_EMBLEM",
     PREVIEW_BORDER = "PREVIEW_BORDER",
     RESET_BORDER = "RESET_BORDER",
+    PREVIEW_BACKGROUND = "PREVIEW_BACKGROUND",
+    RESET_BACKGROUND = "RESET_BACKGROUND"
 };
 
 local Registry = CreateFromMixins(CallbackRegistryMixin);
@@ -76,11 +78,26 @@ function TabardyDesignerMixin:OnLoad()
     self:SetTitle("Tabardy");
 
     self.Model:SetHitRectInsets(0, 0, 0, 30);
+    self.Model:SetScript("OnMouseDown", function(model, button)
+        if button ~= "RightButton" then
+            ModelFrameMixin.OnMouseDown(model, button);
+        end
+    end);
+
+    self.Model:SetScript("OnMouseUp", function(model, button)
+        if button ~= "RightButton" then
+            ModelFrameMixin.OnMouseUp(model, button);
+        end
+    end);
 
     RunNextFrame(function() tinsert(UISpecialFrames, self:GetName()) end);
 
     Registry:RegisterCallback(Events.PREVIEW_EMBLEM, self.PreviewEmblem, self);
     Registry:RegisterCallback(Events.RESET_EMBLEM, self.ResetEmblem, self);
+    Registry:RegisterCallback(Events.PREVIEW_BORDER, self.PreviewBorder, self);
+    Registry:RegisterCallback(Events.RESET_BORDER, self.ResetBorder, self);
+    Registry:RegisterCallback(Events.PREVIEW_BACKGROUND, self.PreviewBackgroundColor, self);
+    Registry:RegisterCallback(Events.RESET_BACKGROUND, self.ResetBackgroundColor, self);
 end
 
 function TabardyDesignerMixin:OnEvent(event, ...)
@@ -276,6 +293,8 @@ function TabardyDesignerMixin:PopulateBackgrounds()
     backgroundPicker:SetLabel("Background");
 
     local function Generator(dropdown, rootDescription)
+        self.StartingBackgroundColor = self:GetSelectedBackgroundColorID();
+
         local columns = 4;
         rootDescription:SetGridMode(MenuConstants.VerticalGridDirection, columns);
 
@@ -298,11 +317,19 @@ function TabardyDesignerMixin:PopulateBackgrounds()
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.ColorID);
+                self.StartingBackgroundColor = nil;
                 return MenuResponse.Close;
             end);
             buttonDescription:SetData(data);
             buttonDescription:SetIsSelected(IsSelected);
+            buttonDescription:SetOnEnter(function()
+                Registry:TriggerEvent(Events.PREVIEW_BACKGROUND, data.ColorID);
+            end);
         end
+
+        rootDescription:AddMenuReleasedCallback(function()
+            Registry:TriggerEvent(Events.RESET_BACKGROUND);
+        end);
     end
 
     backgroundPicker:SetupMenu(Generator);
@@ -331,6 +358,7 @@ function TabardyDesignerMixin:PopulateBorders()
     borderPicker:SetLabel("Border");
 
     local function Generator(dropdown, rootDescription)
+        self.StartingBorder = self:GetSelectedBorderID();
         for i, choice in ipairs(choices) do
             local data = {
                 Index = i, -- used for the number text on the menu entries
@@ -350,6 +378,7 @@ function TabardyDesignerMixin:PopulateBorders()
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.BorderID);
+                self.StartingBorder = nil;
                 return MenuResponse.Close;
             end);
             buttonDescription:SetData(data);
@@ -386,6 +415,7 @@ function TabardyDesignerMixin:PopulateBorderColors()
     borderColorPicker:SetLabel("Border Color");
 
     local function Generator(dropdown, rootDescription)
+        self.StartingBorderColor = self:GetSelectedBorderColorID();
         for i, choice in ipairs(choices) do
             local data = {
                 Index = i, -- used for the number text on the menu entries
@@ -405,6 +435,7 @@ function TabardyDesignerMixin:PopulateBorderColors()
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.ColorID);
+                self.StartingBorderColor = nil;
                 return MenuResponse.Close;
             end);
             buttonDescription:SetData(data);
@@ -522,7 +553,7 @@ end
 
 function TabardyDesignerMixin:LoadModel()
     self.Model:InitializeTabardColors();
-    self.Model:SetPosition(0, 0.7, 0);
+    self.Model:SetPosition(0, 0.5, 0);
 end
 
 function TabardyDesignerMixin:RefreshModel()
@@ -568,6 +599,39 @@ end
 
 function TabardyDesignerMixin:ResetEmblem()
     self:PreviewEmblem();
+end
+
+function TabardyDesignerMixin:PreviewBorder(borderID, colorID)
+    borderID = borderID or self:GetSelectedBorderID();
+    colorID = colorID or self:GetSelectedBorderColorID();
+    self:SetCustomization(CUSTOMIZATION_TYPE.BORDER, borderID);
+    self:SetCustomization(CUSTOMIZATION_TYPE.BORDER_COLOR, colorID);
+end
+
+function TabardyDesignerMixin:ResetBorder()
+    if self.StartingBorder then
+        self:SetCustomization(CUSTOMIZATION_TYPE.BORDER, self.StartingBorder);
+    end
+
+    if self.StartingBorderColor then
+        self:SetCustomization(CUSTOMIZATION_TYPE.BORDER_COLOR, self.StartingBorderColor);
+    end
+
+    self.StartingBorder = nil;
+    self.StartingBorderColor = nil;
+end
+
+function TabardyDesignerMixin:PreviewBackgroundColor(colorID)
+    colorID = colorID or self:GetSelectedBackgroundColorID();
+    self:SetCustomization(CUSTOMIZATION_TYPE.BACKGROUND, colorID);
+end
+
+function TabardyDesignerMixin:ResetBackgroundColor()
+    if self.StartingBackgroundColor then
+        self:SetCustomization(CUSTOMIZATION_TYPE.BACKGROUND, self.StartingBackgroundColor);
+    end
+
+    self.StartingBackgroundColor = nil;
 end
 
 function TabardyDesignerMixin:SaveTabard()
