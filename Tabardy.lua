@@ -315,7 +315,7 @@ function TabardyDesignerMixin:PopulateBorders()
     local bordersAdded = {};
     for borderFileID, borderInfo in pairs(allBorders) do
         local borderID = borderInfo.BorderID;
-        if borderInfo.Component == 3 and not bordersAdded[borderID] then
+        if borderInfo.Component == 3 and not bordersAdded[borderID] and borderID < 6 then
             local choice = {
                 FileID = borderFileID,
                 BorderID = borderID
