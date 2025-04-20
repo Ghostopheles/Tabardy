@@ -99,6 +99,14 @@ function Tabardy.GetBorderID(fdid)
     return border.BorderID;
 end
 
+function Tabardy.GetBorderByID(id)
+    for _, border in pairs(Data.Borders) do
+        if border.BorderID == id then
+            return border;
+        end
+    end
+end
+
 function Tabardy.GetColorIDForBorder(fdid)
     local border = Data.Borders[fdid];
     return border.Color;
