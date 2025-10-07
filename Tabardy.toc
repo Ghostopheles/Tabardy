@@ -1,4 +1,4 @@
-## Interface: 110200
+## Interface: 110205
 ## Title: |cfffc037bTabardy|r
 ## Notes: A redesign of the in-game tabard designer UI
 ## Author: Ghostopheles
