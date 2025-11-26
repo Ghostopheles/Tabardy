@@ -77,6 +77,8 @@ function TabardyDesignerMixin:OnLoad()
 
     self:SetTitle("Tabardy");
 
+    self.Model = self.CharacterModel.Model;
+
     self.Model:SetHitRectInsets(0, 0, 0, 30);
     self.Model:SetScript("OnMouseDown", function(model, button)
         if button ~= "RightButton" then

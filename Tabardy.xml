@@ -1,46 +1,57 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-    <Frame name="TabardyDesigner" inherits="PortraitFrameFlatTemplate" mixin="TabardyDesignerMixin"
+    <Frame name="TabardyDesigner" inherits="PortraitFrameTemplate" mixin="TabardyDesignerMixin"
         parent="UIParent" movable="true" enableMouse="true" dontSavePosition="true" hidden="true">
-        <Size x="600" y="700" />
+        <Size x="1618" y="883"/>
         <Anchors>
-            <Anchor point="CENTER" />
-        </Anchors>
-        <Layers>
-            <Layer level="OVERLAY">
-                <Texture parentKey="Checkmark" atlas="common-icon-checkmark"
-                    alpha="0">
-                    <Size x="40" y="40" />
-                    <Anchors>
-                        <Anchor point="TOP" y="-100" />
-                    </Anchors>
-                </Texture>
-            </Layer>
-        </Layers>
-        <Animations>
-            <AnimationGroup parentKey="SaveAnim" setToFinalAlpha="true" looping="NONE">
-                <Alpha parentKey="Checkmark" childKey="Checkmark" fromAlpha="1" toAlpha="0"
-                    duration="0.6" order="0" />
-                <Scale parentKey="Checkmark" childKey="Checkmark" fromScaleX="0.7" toScaleX="1.5"
-                    smoothing="NONE" fromScaleY="0.7" toScaleY="1.5" duration="0.6" order="0" />
-            </AnimationGroup>
-        </Animations>
+			<Anchor point="TOP" x="0" y="-41"/>
+		</Anchors>
         <Frames>
-            <TabardModel parentKey="Model" inherits="ModelWithControlsTemplate">
+            <Frame parentKey="CharacterModel">
+                <Size x="658" y="882"/>
                 <Anchors>
                     <Anchor point="TOPLEFT" />
-                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" />
                 </Anchors>
-                <Scripts>
-                    <OnMouseWheel function="nop" />
-                </Scripts>
-            </TabardModel>
-            <Frame parentKey="MoneyFrame" inherits="SmallMoneyFrameTemplate">
+                <Layers>
+					<Layer level="BACKGROUND">
+						<Texture parentKey="Background" atlas="transmog-locationbg" useAtlasSize="true">
+							<Anchors>
+								<Anchor point="TOPLEFT"/>
+                                <Anchor point="BOTTOMLEFT"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+                <Frames>
+                    <TabardModel parentKey="Model" inherits="ModelWithControlsTemplate">
+                        <Scripts>
+                            <OnMouseWheel function="nop" />
+                        </Scripts>
+                    </TabardModel>
+                </Frames>
+            </Frame>
+
+            <Frame parentKey="MoneyFrame">
+                <Size x="152" y="24"/>
                 <Anchors>
                     <Anchor point="BOTTOMLEFT" x="4" y="8" />
                 </Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture parentKey="Background" atlas="common-currencybox-a" setAllPoints="true"/>
+                    </Layer>
+                </Layers>
+                <Frames>
+                    <Frame parentKey="Money" inherits="SmallMoneyFrameTemplate">
+                        <Size x="141" y="15"/>
+                        <Anchors>
+                            <Anchor point="BOTTOMRIGHT" x="9" y="6" />
+                        </Anchors>
+                    </Frame>
+                </Frames>
             </Frame>
+            
             <Frame parentKey="CostFrame" inherits="SmallMoneyFrameTemplate">
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT" y="8" />
@@ -63,89 +74,7 @@
                     </OnLoad>
                 </Scripts>
             </Frame>
-            <Frame parentKey="Customizations">
-                <Size x="200" y="200" />
-                <Anchors>
-                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.CostFrame"
-                        relativePoint="TOPRIGHT" x="-50" y="60" />
-                </Anchors>
-                <Frames>
-                    <DropdownButton parentKey="EmblemPicker"
-                        inherits="TabardyNumberedDropdownButtonTemplate" id="1">
-                        <Anchors>
-                            <Anchor point="TOP" />
-                        </Anchors>
-                    </DropdownButton>
-                    <DropdownButton parentKey="EmblemColorPicker"
-                        inherits="TabardyColorSwatchDropdownButtonTemplate" id="2">
-                        <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.EmblemPicker"
-                                relativePoint="BOTTOM" y="-25" />
-                        </Anchors>
-                    </DropdownButton>
-                    <DropdownButton parentKey="BackgroundPicker"
-                        inherits="TabardyColorSwatchDropdownButtonTemplate" id="5">
-                        <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.EmblemColorPicker"
-                                relativePoint="BOTTOM" y="-25" />
-                        </Anchors>
-                    </DropdownButton>
-                    <DropdownButton parentKey="BorderPicker"
-                        inherits="TabardyNumberedDropdownButtonTemplate"
-                        id="3">
-                        <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.BackgroundPicker"
-                                relativePoint="BOTTOM" y="-25" />
-                        </Anchors>
-                    </DropdownButton>
-                    <DropdownButton parentKey="BorderColorPicker"
-                        inherits="TabardyColorSwatchDropdownButtonTemplate" id="4">
-                        <Anchors>
-                            <Anchor point="TOP" relativeKey="$parent.BorderPicker"
-                                relativePoint="BOTTOM" y="-25" />
-                        </Anchors>
-                    </DropdownButton>
-                </Frames>
-            </Frame>
-            <Frame parentKey="EmblemContainer">
-                <Size x="200" y="193" />
-                <Anchors>
-                    <Anchor point="BOTTOM" relativeKey="$parent.Customizations" relativePoint="TOP"
-                        y="100" />
-                </Anchors>
-                <Layers>
-                    <Layer level="OVERLAY">
-                        <Texture parentKey="TopLeft" alphaMode="ADD">
-                            <Size x="100" y="119" />
-                            <TexCoords left="0.5" right="0" top="0" bottom="1" />
-                            <Anchors>
-                                <Anchor point="TOPLEFT" />
-                            </Anchors>
-                        </Texture>
-                        <Texture parentKey="TopRight" alphaMode="ADD">
-                            <Size x="100" y="119" />
-                            <TexCoords left="0" right="0.5" top="0" bottom="1" />
-                            <Anchors>
-                                <Anchor point="TOPRIGHT" />
-                            </Anchors>
-                        </Texture>
-                        <Texture parentKey="BottomLeft" alphaMode="ADD">
-                            <Size x="100" y="74" />
-                            <TexCoords left="0.5" right="0" top="0" bottom="1" />
-                            <Anchors>
-                                <Anchor point="BOTTOMLEFT" />
-                            </Anchors>
-                        </Texture>
-                        <Texture parentKey="BottomRight" alphaMode="ADD">
-                            <Size x="100" y="74" />
-                            <TexCoords left="0" right="0.5" top="0" bottom="1" />
-                            <Anchors>
-                                <Anchor point="BOTTOMRIGHT" />
-                            </Anchors>
-                        </Texture>
-                    </Layer>
-                </Layers>
-            </Frame>
+    
             <Button parentKey="AcceptButton" inherits="UIPanelButtonTemplate" text="ACCEPT">
                 <Size x="125" y="30" />
                 <Anchors>
@@ -199,4 +128,5 @@
             <OnMouseUp method="OnMouseUp" />
         </Scripts>
     </Frame>
+
 </Ui>
