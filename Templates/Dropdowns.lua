@@ -80,8 +80,6 @@ end
 
 function TabardyEmblemEntryMixin:SetEmblem(emblemID)
     self.Emblem:SetEmblem(emblemID);
-    self.Emblem:SetSize(50, 48);
-    self.Emblem:UpdateSize();
 end
 
 ------------

@@ -80,9 +80,9 @@
         </Layers>
     </Button>
 
-    <Button name="TabardyEmblemEntryTemplate" mixin="TabardyNumberedEntryMixin"
+    <Button name="TabardyEmblemEntryTemplate" mixin="TabardyEmblemEntryMixin"
         virtual="true">
-        <Size x="20" y="20" />
+        <Size x="50" y="45" />
         <Layers>
             <Layer level="HIGHLIGHT">
                 <Texture parentKey="HighlightTexture" setAllPoints="true">
@@ -114,9 +114,11 @@
         </Layers>
         <Frames>
             <Frame parentKey="Emblem" inherits="TabardyEmblemContainerTemplate">
-                <Size x="50" y="45" />
+                <Size x="50" y="45"/>
                 <Anchors>
-                    <Anchor point="LEFT" relativeKey="$parent.Text" relativePoint="RIGHT" x="10" />
+                    <Anchor point="TOPRIGHT" y="-3" x="-5" />
+                    <Anchor point="BOTTOMRIGHT" y="3" x="-5"/>
+                    <Anchor point="LEFT" relativeKey="$parent.Text" relativePoint="RIGHT" x="5"/>
                 </Anchors>
             </Frame>
         </Frames>

@@ -2,10 +2,9 @@ TabardyEmblemContainerMixin = {};
 
 function TabardyEmblemContainerMixin:UpdateSize()
     local h = self:GetHeight();
-    local heightOffset = 0.12 * h;
 
     self.TopLeft:SetPoint("TOPLEFT");
-    self.TopLeft:SetPoint("BOTTOMRIGHT", self, "CENTER", 0, -heightOffset);
+    self.TopLeft:SetPoint("BOTTOMRIGHT", self, "CENTER", 0, 0);
 
     self.TopRight:SetPoint("TOPRIGHT");
     self.TopRight:SetPoint("BOTTOMLEFT", self.TopLeft, "BOTTOMRIGHT");
@@ -20,5 +19,13 @@ end
 function TabardyEmblemContainerMixin:SetEmblem(emblemID)
     local selectedColor = TabardyDesigner:GetSelectedEmblemColorID();
     local textures = Tabardy.GetTexturesForEmblemAndColor(emblemID, selectedColor);
-    DevTools_Dump(textures);
+    table.sort(textures);
+
+    self.TopLeft:SetTexture(textures[2]);
+    self.BottomLeft:SetTexture(textures[1]);
+
+    self.TopRight:SetTexture(textures[2]);
+    self.BottomRight:SetTexture(textures[1]);
+
+    self:UpdateSize();
 end
