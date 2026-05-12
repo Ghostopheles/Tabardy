@@ -1,15 +1,7 @@
-local Events = {
-    PREVIEW_EMBLEM = "PREVIEW_EMBLEM",
-    RESET_EMBLEM = "RESET_EMBLEM",
-    PREVIEW_BORDER = "PREVIEW_BORDER",
-    RESET_BORDER = "RESET_BORDER",
-    PREVIEW_BACKGROUND = "PREVIEW_BACKGROUND",
-    RESET_BACKGROUND = "RESET_BACKGROUND"
-};
+local _, internal = ...;
 
-local Registry = CreateFromMixins(CallbackRegistryMixin);
-Registry:OnLoad();
-Registry:GenerateCallbackEvents(GetKeysArray(Events));
+local Events = internal.Events;
+local Registry = internal.Registry;
 
 ------------
 

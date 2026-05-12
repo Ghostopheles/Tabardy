@@ -1,0 +1,55 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+    <Script file="GalleryEntry.lua" />
+
+    <Frame name="TabardyGalleryEntryTemplate" mixin="TabardyGalleryEntryMixin" enableMouse="true" virtual="true">
+        <Size x="150" y="150"/>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Label" font="UserScaledFontGameNormalLarge" justifyH="RIGHT" justifyV="BOTTOM">
+                    <Anchors>
+                        <Anchor point="BOTTOMRIGHT" x="-15" y="15"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BORDER">
+                <Texture parentKey="Border" setAllPoints="true" atlas="housing-simple-wood-frame" useAtlasSize="false"/>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" setAllPoints="true" atlas="housing-wood-frame-basic-background" useAtlasSize="false"/>
+            </Layer>
+        </Layers>
+
+        <Frames>
+            <Frame parentKey="EmblemContainer" inherits="TabardyEmblemContainerTemplate" >
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="8" y="-8"/>
+                    <Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
+                </Anchors>
+            </Frame>
+
+            <Frame parentKey="Highlight" inherits="NineSlicePanelTemplate" hidden="true">
+                <KeyValues>
+                    <KeyValue key="layoutType" value="TabardyGoldHighlight" />
+                </KeyValues>
+            </Frame>
+        </Frames>
+
+        <Scripts>
+            <OnLoad method="OnLoad"/>
+            <OnEnter method="OnEnter"/>
+            <OnLeave method="OnLeave"/>
+            <OnMouseDown method="OnMouseDown"/>
+            <OnMouseUp method="OnMouseUp"/>
+        </Scripts>
+
+    </Frame>
+
+    <Frame name="TabardyGallerySelectionTemplate" inherits="NineSlicePanelTemplate" hidden="true" virtual="true">
+        <KeyValues>
+            <KeyValue key="layoutType" value="TabardyBlueHighlight" />
+        </KeyValues>
+    </Frame>
+
+</Ui>

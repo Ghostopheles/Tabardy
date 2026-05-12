@@ -23,9 +23,13 @@
 ## X-Curse-Project-ID: 1016691
 ## X-Wago-ID: QKywQaN7
 
+Events.lua
+
 Templates/EmblemContainer.xml
 Templates/Dropdowns.xml
 Templates/ButtonPair.xml
+Templates/GalleryEntry.xml
+Templates/Gallery.xml
 
 TabardyData.lua
 Tabardy.lua

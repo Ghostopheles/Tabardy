@@ -16,9 +16,9 @@ function TabardyEmblemContainerMixin:UpdateSize()
     self.BottomRight:SetPoint("TOPLEFT", self.TopLeft, "BOTTOMRIGHT");
 end
 
-function TabardyEmblemContainerMixin:SetEmblem(emblemID)
-    local selectedColor = TabardyDesigner:GetSelectedEmblemColorID();
-    local textures = Tabardy.GetTexturesForEmblemAndColor(emblemID, selectedColor);
+function TabardyEmblemContainerMixin:SetEmblem(emblemID, colorID)
+    colorID = colorID or TabardyDesigner:GetSelectedEmblemColorID();
+    local textures = Tabardy.GetTexturesForEmblemAndColor(emblemID, colorID);
     table.sort(textures);
 
     self.TopLeft:SetTexture(textures[2]);
