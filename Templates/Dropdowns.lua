@@ -10,13 +10,6 @@ function TabardyNumberedColorSwatchMixin:Init(data, elementDescription, isSelect
     self:Update();
 end
 
-function TabardyNumberedColorSwatchMixin:OnClick(buttonName)
-    if self.ElementDescription then
-        local inputContext = MenuInputContext.MouseButton;
-        self.ElementDescription:Pick(inputContext, buttonName);
-    end
-end
-
 function TabardyNumberedColorSwatchMixin:Update()
     self:SetNumber(self.Index);
     self:SetSwatchColor(self.Color);
@@ -50,13 +43,6 @@ function TabardyNumberedEntryMixin:Init(data, elementDescription, isSelected)
     self:Update();
 end
 
-function TabardyNumberedEntryMixin:OnClick(buttonName)
-    if self.ElementDescription then
-        local inputContext = MenuInputContext.MouseButton;
-        self.ElementDescription:Pick(inputContext, buttonName);
-    end
-end
-
 function TabardyNumberedEntryMixin:Update()
     self:SetNumber(self.Index);
     self:SetSelectedTextureShown(self.Selected);
@@ -80,13 +66,6 @@ function TabardyEmblemEntryMixin:Init(data, elementDescription, isSelected)
     self.EmblemID = data.EmblemID;
     self.IsSelected = isSelected;
     self:Update();
-end
-
-function TabardyEmblemEntryMixin:OnClick(buttonName)
-    if self.ElementDescription then
-        local inputContext = MenuInputContext.MouseButton;
-        self.ElementDescription:Pick(inputContext, buttonName);
-    end
 end
 
 function TabardyEmblemEntryMixin:Update()

@@ -186,14 +186,20 @@ function TabardyDesignerMixin:PopulateEmblems()
                 Type = CUSTOMIZATION_TYPE.EMBLEM,
             };
 
+            local buttonDescription = rootDescription:CreateTemplate("TabardyEmblemEntryTemplate", data);
+
             local function IsSelected(elementData)
                 return elementData.EmblemID == self:GetSelectedEmblemID();
             end
 
-            local buttonDescription = rootDescription:CreateTemplate("TabardyEmblemEntryTemplate", data);
             buttonDescription:AddInitializer(function(button, elementDescription, menu)
                 local isSelected = IsSelected(data);
                 button:Init(data, elementDescription, isSelected);
+
+                button:SetScript("OnClick", function(_, buttonName)
+                    local inputContext = MenuInputContext.MouseButton;
+                    elementDescription:Pick(inputContext, buttonName)
+                end);
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.EmblemID);
@@ -249,6 +255,10 @@ function TabardyDesignerMixin:PopulateEmblemColors()
             buttonDescription:AddInitializer(function(button, elementDescription, menu)
                 local isSelected = IsSelected(data);
                 button:Init(data, elementDescription, isSelected);
+                button:SetScript("OnClick", function(_, buttonName)
+                    local inputContext = MenuInputContext.MouseButton;
+                    elementDescription:Pick(inputContext, buttonName)
+                end);
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.ColorID);
@@ -314,6 +324,10 @@ function TabardyDesignerMixin:PopulateBackgrounds()
             buttonDescription:AddInitializer(function(button, elementDescription, menu)
                 local isSelected = IsSelected(data);
                 button:Init(data, elementDescription, isSelected);
+                button:SetScript("OnClick", function(_, buttonName)
+                    local inputContext = MenuInputContext.MouseButton;
+                    elementDescription:Pick(inputContext, buttonName)
+                end);
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.ColorID);
@@ -375,6 +389,10 @@ function TabardyDesignerMixin:PopulateBorders()
             buttonDescription:AddInitializer(function(button, elementDescription, menu)
                 local isSelected = IsSelected(data);
                 button:Init(data, elementDescription, isSelected);
+                button:SetScript("OnClick", function(_, buttonName)
+                    local inputContext = MenuInputContext.MouseButton;
+                    elementDescription:Pick(inputContext, buttonName)
+                end);
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.BorderID);
@@ -432,6 +450,10 @@ function TabardyDesignerMixin:PopulateBorderColors()
             buttonDescription:AddInitializer(function(button, elementDescription, menu)
                 local isSelected = IsSelected(data);
                 button:Init(data, elementDescription, isSelected);
+                button:SetScript("OnClick", function(_, buttonName)
+                    local inputContext = MenuInputContext.MouseButton;
+                    elementDescription:Pick(inputContext, buttonName)
+                end);
             end);
             buttonDescription:SetResponder(function(elementData, menuInputData, menu)
                 self:SetCustomization(elementData.Type, elementData.ColorID);

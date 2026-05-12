@@ -44,9 +44,6 @@
                 </Texture>
             </Layer>
         </Layers>
-        <Scripts>
-            <OnClick method="OnClick" />
-        </Scripts>
     </Button>
 
     <Button name="TabardyNumberedEntryTemplate" mixin="TabardyNumberedEntryMixin"
@@ -81,9 +78,6 @@
                 </Texture>
             </Layer>
         </Layers>
-        <Scripts>
-            <OnClick method="OnClick" />
-        </Scripts>
     </Button>
 
     <Button name="TabardyEmblemEntryTemplate" mixin="TabardyNumberedEntryMixin"
@@ -126,9 +120,6 @@
                 </Anchors>
             </Frame>
         </Frames>
-        <Scripts>
-            <OnClick method="OnClick" />
-        </Scripts>
     </Button>
 
     <DropdownButton name="TabardyDropdownButtonTemplate" mixin="TabardyDropdownButtonMixin"
