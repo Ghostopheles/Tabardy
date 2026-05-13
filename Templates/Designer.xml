@@ -3,14 +3,65 @@
 
     <Script file="Designer.lua" />
 
-    <Frame name="TabardyDesignerNew" parent="UIParent" mixin="TabardyDesignerNewMixin" hidden="true">
-        <Size x="1300" y="720"/>
+    <Frame name="TabardyDesignerNew" parent="UIParent" mixin="TabardyDesignerNewMixin" movable="true" hidden="true" dontSavePosition="true">
+        <Size x="1500" y="720"/>
 
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
 
         <Frames>
+            <Frame parentKey="TitleBar" inherits="PanelDragBarTemplate" frameLevel="300" enableMouse="true">
+                <Size y="35"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" y="5"/>
+                    <Anchor point="TOPRIGHT" y="5"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <Texture parentKey="TitleContainer" atlas="housing-basic-panel-footer">
+                            <Size x="484" y="50"/>
+                            <Anchors>
+                                <Anchor point="BOTTOM" relativePoint="CENTER" y="-5" />
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="TitleContainerBorder" atlas="housing-simple-wood-frame">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativeKey="$parent.TitleContainer"/>
+                                <Anchor point="BOTTOMRIGHT" relativeKey="$parent.TitleContainer"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="TitleArtGlow" atlas="house-chest-header-bg">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativeKey="$parent.TitleContainer"/>
+                                <Anchor point="BOTTOMRIGHT" relativeKey="$parent.TitleContainer"/>
+                            </Anchors>
+                        </Texture>
+                        <FontString parentKey="TitleText" font="GameFontNormalHuge" justifyH="CENTER" justifyV="MIDDLE">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent.TitleContainer"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1" />
+                        </FontString>
+                    </Layer>
+                    <Layer level="OVERLAY" textureSubLevel="-1">
+                        <Texture parentKey="TitleBarBorder" atlas="housing-simple-wood-frame" setAllPoints="true"/>
+                    </Layer>
+                    <Layer level="ARTWORK">
+                        <Texture parentKey="TitleArt" atlas="housing-basic-container-woodheader" setAllPoints="true"/>
+                    </Layer>
+                </Layers>
+
+                <Frames>
+                    <Button parentKey="CloseButton" inherits="BigRedExitButtonTemplate">
+                        <Size x="32" y="32"/>
+                        <Anchors>
+                            <Anchor point="RIGHT" x="-5"/>
+                        </Anchors>
+                    </Button>
+                </Frames>
+            </Frame>
+
             <Frame parentKey="ModelFrame" inherits="TabardyModelFrameTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT"/>
@@ -20,9 +71,29 @@
 
             <Frame parentKey="Gallery" inherits="TabardyGalleryTemplate">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent.ModelFrame" relativePoint="TOPRIGHT"/>
-                    <Anchor point="BOTTOMRIGHT"/>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.ModelFrame" relativePoint="TOPRIGHT" x="20" />
                 </Anchors>
+            </Frame>
+
+            <Frame parentKey="Art">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="-2" y="2"/>
+                    <Anchor point="BOTTOMRIGHT" x="2" y="-2"/>
+                </Anchors>
+
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture parentKey="Placeholder" atlas="catalogshop-widecard-placeholder">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativeKey="$parent.$parent.Gallery" relativePoint="TOPRIGHT"/>
+                                <Anchor point="BOTTOMRIGHT" relativeKey="$parent.$parent"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="BORDER">
+                        <Texture parentKey="Border" atlas="housing-wood-frame" setAllPoints="true"/>
+                    </Layer>
+                </Layers>
             </Frame>
         </Frames>
 

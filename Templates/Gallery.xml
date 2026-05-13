@@ -4,14 +4,14 @@
     <Script file="Gallery.lua" />
 
     <Frame name="TabardyGalleryTemplate" mixin="TabardyGalleryMixin" virtual="true">
-        <Size x="800" y="720"/>
+        <Size x="655" y="720"/>
 
         <Frames>
             <Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
             <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
                 <Anchors>
-                    <Anchor point="TOPRIGHT" x="-5" y="-8" />
-                    <Anchor point="BOTTOMRIGHT" x="-5" y="2" />
+                    <Anchor point="TOPRIGHT" x="-12" y="-28" />
+                    <Anchor point="BOTTOMRIGHT" x="-12" y="11" />
                 </Anchors>
             </EventFrame>
         </Frames>

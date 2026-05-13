@@ -5,7 +5,7 @@ local Registry = internal.Registry;
 
 ------------
 
-local SCROLLBOX_STRIDE = 5;
+local SCROLLBOX_STRIDE = 4;
 local SCROLLBOX_SPACING = 4;
 
 ---@enum TabardyGalleryEntryType
@@ -30,14 +30,14 @@ end
 
 function TabardyGalleryMixin:SetupScrollBox()
     local anchorsWithScrollBar = {
-        CreateAnchor("TOPLEFT", self, "TOPLEFT", 10, 0),
+        CreateAnchor("TOPLEFT", self, "TOPLEFT", 5, -10),
         CreateAnchor("TOPRIGHT", self.ScrollBar, "TOPLEFT", -5, 0),
-        CreateAnchor("BOTTOM", self, "BOTTOM");
+        CreateAnchor("BOTTOM", self, "BOTTOM", 0, 5);
     };
 
     local anchorsWithoutScrollBar = {
         anchorsWithScrollBar[1],
-        CreateAnchor("TOPRIGHT", self, "TOPRIGHT", -5, -30),
+        CreateAnchor("TOPRIGHT", self, "TOPRIGHT", -5, -10),
         anchorsWithScrollBar[3],
     };
 

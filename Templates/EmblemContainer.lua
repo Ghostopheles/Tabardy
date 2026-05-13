@@ -1,12 +1,12 @@
 TabardyEmblemContainerMixin = {};
 
 function TabardyEmblemContainerMixin:UpdateSize()
-    local h = self:GetHeight();
+    local topOffset = 25;
 
-    self.TopLeft:SetPoint("TOPLEFT");
+    self.TopLeft:SetPoint("TOPLEFT", 0, topOffset);
     self.TopLeft:SetPoint("BOTTOMRIGHT", self, "CENTER", 0, 0);
 
-    self.TopRight:SetPoint("TOPRIGHT");
+    self.TopRight:SetPoint("TOPRIGHT", 0, topOffset);
     self.TopRight:SetPoint("BOTTOMLEFT", self.TopLeft, "BOTTOMRIGHT");
 
     self.BottomLeft:SetPoint("BOTTOMLEFT");

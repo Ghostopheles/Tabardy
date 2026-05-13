@@ -1,10 +1,15 @@
 TabardyDesignerNewMixin = {};
 
 function TabardyDesignerNewMixin:OnLoad()
+    self:SetTitle("Tabardy");
 end
 
 function TabardyDesignerNewMixin:OnShow()
     self:TestGallery();
+end
+
+function TabardyDesignerNewMixin:SetTitle(text)
+    self.TitleBar.TitleText:SetText(text);
 end
 
 function TabardyDesignerNewMixin:TestGallery()

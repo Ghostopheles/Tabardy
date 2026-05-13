@@ -153,7 +153,7 @@ function TabardyGalleryEntryMixin:OnMouseUp(button)
 
     self.Highlight.Center:SetAlpha(0.25);
 
-    TabardyGallery.SelectionBehavior:Select(self);
+    TabardyDesignerNew.Gallery.SelectionBehavior:Select(self);
 end
 
 function TabardyGalleryEntryMixin:OnPreviewEmblemColor(colorID)

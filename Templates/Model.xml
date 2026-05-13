@@ -42,10 +42,10 @@
                 </Scripts>
             </Button>
 
-            <Frame parentKey="PlayerCard">
+            <Frame parentKey="PlayerCard" frameLevel="400">
                 <Size x="120" y="175"/>
                 <Anchors>
-                    <Anchor point="CENTER" relativePoint="TOPLEFT" x="35" y="-85"/>
+                    <Anchor point="CENTER" relativePoint="TOPLEFT" x="35" y="-65"/>
                 </Anchors>
 
                 <Frames>
@@ -198,14 +198,14 @@
                     <KeyValue key="useAtlasSize" value="false" />
                 </KeyValues>
                 <Anchors>
-                    <Anchor point="TOPRIGHT" x="-25" y="-25" />
+                    <Anchor point="TOPRIGHT" x="-20" y="-28" />
                 </Anchors>
             </Button>
 
             <Frame parentKey="MoneyContainer">
                 <Size x="180" y="22"/>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent.PlayerCard" relativePoint="TOPRIGHT" x="10" y="-10" />
+                    <Anchor point="BOTTOMLEFT" x="10" y="10" />
                 </Anchors>
 
                 <Layers>
@@ -231,14 +231,20 @@
 
         <Layers>
             <Layer level="BORDER">
-                <Texture parentKey="Border" atlas="housing-wood-frame" setAllPoints="true"/>
+                <Texture parentKey="Separator" atlas="house-chest-nav-bg_primary">
+                    <Size x="25"/>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" y="-6" />
+                        <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" y="6" />
+                    </Anchors>
+                </Texture>
             </Layer>
             <Layer level="BACKGROUND" textureSubLevel="1">
                 <Texture parentKey="Footer" atlas="housing-basic-panel-footer">
                     <Size y="40"/>
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT"/>
-                        <Anchor point="BOTTOMRIGHT"/>
+                        <Anchor point="BOTTOMLEFT" y="2"/>
+                        <Anchor point="BOTTOMRIGHT" y="2" />
                     </Anchors>
                 </Texture>
             </Layer>
