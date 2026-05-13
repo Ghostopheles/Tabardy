@@ -58,8 +58,6 @@ end
 TabardyModelFrameMixin = {};
 
 function TabardyModelFrameMixin:OnLoad()
-    self:SetTitle("Tabardy Model Frame");
-
     local events = {
         "TABARD_CANSAVE_CHANGED",
         "TABARD_SAVE_PENDING",
@@ -74,12 +72,17 @@ function TabardyModelFrameMixin:OnLoad()
     resetButton:SetScript("OnClick", function()
         self:Recenter();
     end);
+
+    self.SaveButton:Disable();
 end
 
 function TabardyModelFrameMixin:OnShow()
-    --if not UnitExists("npc") then
-    --    return;
-    --end
+    if not UnitExists("npc") then
+        self:Hide();
+        return;
+    end
+
+    self:Setup();
 end
 
 function TabardyModelFrameMixin:OnHide()
@@ -97,6 +100,8 @@ function TabardyModelFrameMixin:OnEvent(event, ...)
         self:UpdateButtons();
     elseif event == "DISPLAY_SIZE_CHANGED" or event == "UI_SCALE_CHANGED" or event == "UNIT_MODEL_CHANGED" then
         self:RefreshModel();
+    elseif event == "PLAYER_MONEY" then
+        self:RefreshMoney();
     end
 end
 
@@ -256,15 +261,23 @@ end
 
 function TabardyModelFrameMixin:Setup()
     PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN);
-    self:LoadPortrait();
+    self:LoadPlayerCard();
     self:ConfigureModel();
     self:LoadModel();
 
+    self:RefreshMoney();
+
     if self.Model:IsGuildTabard() then
-        MoneyFrame_Update(self.CostFrame, GetTabardCreationCost());
-        self.CostFrame:Show();
+        local cost = GetTabardCreationCost();
+        if cost then
+            local coinString = C_CurrencyInfo.GetCoinTextureString(cost);
+            coinString = RED_FONT_COLOR:WrapTextInColorCode(coinString);
+            self.CostContainer.Text:SetText(format("Cost: %s", coinString));
+            self.CostContainer:Show();
+        end
+        self.CostContainer:Hide();
     else
-        self.CostFrame:Hide();
+        self.CostContainer:Hide();
     end
 end
 
@@ -295,9 +308,20 @@ function TabardyModelFrameMixin:ConfigureModel()
     self.Model:SetRoll(0);
 end
 
-function TabardyModelFrameMixin:LoadPortrait()
-    local unit = UnitExists("npc") and "npc" or "player";
-    SetPortraitTexture(self.PortraitContainer.portrait, unit);
+function TabardyModelFrameMixin:LoadPlayerCard()
+    local unit = "player";
+
+    local card = self.PlayerCard;
+    local portraitContainer = card.PortraitContainer;
+    SetPortraitTexture(portraitContainer.Portrait, unit);
+
+    --if self.Model:IsGuildTabard() and IsInGuild() then
+    if IsInGuild() then
+        SetLargeGuildTabardTextures("player", card.BannerEmblem, card.BannerBackground, card.BannerBorder)
+
+        local guildName = GetGuildInfo("player");
+        card.NameText:SetText(guildName);
+    end
 end
 
 function TabardyModelFrameMixin:LoadModel()
@@ -309,6 +333,12 @@ function TabardyModelFrameMixin:RefreshModel()
     local blend = true;
     local useNativeForm = self:ShouldUseNativeForm();
     self.Model:SetUnit("player", blend, useNativeForm);
+end
+
+function TabardyModelFrameMixin:RefreshMoney()
+    local money = GetMoney();
+    local coinString = C_CurrencyInfo.GetCoinTextureString(money);
+    self.MoneyContainer.Text:SetText(format("Your Money: %s", coinString));
 end
 
 function TabardyModelFrameMixin:ShouldUseNativeForm()

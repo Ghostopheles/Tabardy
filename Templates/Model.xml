@@ -3,7 +3,14 @@
 
     <Script file="Model.lua" />
 
-    <Frame name="TabardyModelFrame" mixin="TabardyModelFrameMixin" inherits="PortraitFrameFlatTemplate" parent="UIParent">
+    <Button name="TabardyModelFrameIconButtonTemplate" virtual="true">
+        <Size x="45" y="45"/>
+        <NormalTexture atlas="house-chest-list-item-default" useAtlasSize="false"/>
+        <HighlightTexture atlas="house-chest-list-item-active" useAtlasSize="false"/>
+        <PushedTexture atlas="house-chest-list-Item-pressed" useAtlasSize="false"/>
+    </Button>
+
+    <Frame name="TabardyModelFrame" mixin="TabardyModelFrameMixin" parent="UIParent" hidden="true">
         <Size x="500" y="720"/>
 
         <Anchors>
@@ -18,39 +25,9 @@
                 </Anchors>
             </TabardModel>
 
-            <Frame parentKey="MoneyFrame" inherits="SmallMoneyFrameTemplate">
+            <Button parentKey="SaveButton" inherits="SharedGoldRedButtonTemplate" text="SAVE_CHANGES">
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT" x="4" y="8" />
-                </Anchors>
-            </Frame>
-
-            <Frame parentKey="CostFrame" inherits="SmallMoneyFrameTemplate">
-                <Anchors>
-                    <Anchor point="BOTTOMRIGHT" y="8" />
-                </Anchors>
-                <Layers>
-                    <Layer level="BACKGROUND">
-                        <FontString parentKey="Label" inherits="GameFontWhite"
-                            text="TABARDVENDORCOST">
-                            <Anchors>
-                                <Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="1" />
-                            </Anchors>
-                        </FontString>
-                    </Layer>
-                </Layers>
-                <Scripts>
-                    <OnLoad>
-                        SmallMoneyFrame_OnLoad(self);
-                        self.small = 0;
-                        MoneyFrame_SetType(self, "STATIC");
-                    </OnLoad>
-                </Scripts>
-            </Frame>
-
-            <Button parentKey="AcceptButton" inherits="UIPanelButtonTemplate" text="ACCEPT">
-                <Size x="125" y="30" />
-                <Anchors>
-                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" x="-5" y="3" />
+                    <Anchor point="BOTTOM" y="7" />
                 </Anchors>
                 <Scripts>
                     <OnClick>
@@ -59,15 +36,163 @@
                 </Scripts>
             </Button>
 
-            <Button parentKey="CancelButton" inherits="UIPanelButtonTemplate" text="CANCEL">
+            <Button parentKey="CancelButton" inherits="SharedButtonTemplate" text="CANCEL">
                 <Size x="125" y="30" />
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOM" x="5" y="3" />
+                    <Anchor point="LEFT" relativeKey="$parent.SaveButton" relativePoint="RIGHT" x="5" />
                 </Anchors>
                 <Scripts>
                     <OnClick function="HideParentPanel" />
                 </Scripts>
             </Button>
+
+            <Frame parentKey="PlayerCard">
+                <Size x="120" y="175"/>
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="TOPLEFT" x="35" y="-85"/>
+                </Anchors>
+
+                <Frames>
+                    <Frame parentKey="PortraitContainer" frameLevel="400">
+                        <Size x="80" y="80"/>
+
+                        <Anchors>
+                            <Anchor point="CENTER" y="-14"/>
+                        </Anchors>
+
+                        <Layers>
+                            <Layer level="OVERLAY" textureSubLevel="1">
+                                <Texture parentKey="GlowRing" atlas="housing-layout-room-orb-ring-active">
+                                    <Size x="110" y="110"/>
+                                    <Anchors>
+                                        <Anchor point="CENTER"/>
+                                    </Anchors>
+                                </Texture>
+                            </Layer>
+
+                            <Layer level="OVERLAY">
+                                <Texture parentKey="Ring" atlas="pet-list_default-ring_2x">
+                                    <Size x="100" y="100"/>
+                                    <Anchors>
+                                        <Anchor point="CENTER"/>
+                                    </Anchors>
+                                </Texture>
+                                <Texture parentKey="Portrait">
+                                    <Size x="72" y="72"/>
+                                    <Anchors>
+                                        <Anchor point="CENTER" y="-2"/>
+                                    </Anchors>
+                                </Texture>
+                                <MaskTexture parentKey="CircleMask" file="Interface\CharacterFrame\TempPortraitAlphaMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+                                    <Anchors>
+                                        <Anchor point="TOPLEFT" relativeKey="$parent.Portrait" x="2" y="0"/>
+                                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Portrait" x="-2" y="4"/>
+                                    </Anchors>
+                                    <MaskedTextures>
+                                        <MaskedTexture childKey="Portrait"/>
+                                    </MaskedTextures>
+                                </MaskTexture>
+                            </Layer>
+
+                            <Layer level="BACKGROUND">
+                                <Texture parentKey="Shadow" atlas="CovenantSanctum-Reservoir-Shadow">
+                                    <Anchors>
+                                        <Anchor point="TOPLEFT" x="-15" y="15"/>
+                                        <Anchor point="BOTTOMRIGHT" x="15" y="-15"/>
+                                    </Anchors>
+                                </Texture>
+                            </Layer>
+                        </Layers>
+                    </Frame>
+                </Frames>
+
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString parentKey="NameText" inherits="GameFontWhite" justifyV="TOP" justifyH="CENTER">
+                            <Anchors>
+                                <Anchor point="TOP" relativeKey="$parent.PortraitContainer" relativePoint="BOTTOM" y="-5"/>
+                                <Anchor point="BOTTOMLEFT"/>
+                                <Anchor point="BOTTOMRIGHT"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+
+                    <Layer level="ARTWORK" textureSubLevel="1">
+                        <FontString parentKey="Name" font="GameFontWhite" justifyH="CENTER" justifyV="TOP">
+                            <Anchors>
+                                <Anchor point="BOTTOMLEFT"/>
+                                <Anchor point="BOTTOMRIGHT"/>
+                                <Anchor point="TOP" relativeKey="$parent.PortraitContainer" relativePoint="BOTTOM" y="-5"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+
+                    <Layer level="ARTWORK">
+                        <Texture parentKey="BannerBackground" atlas="guildfinder-card-guildbanner-background">
+                            <Size x="105" y="80"/>
+                            <Anchors>
+                                <Anchor point="TOP" relativePoint="TOP" y="10"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="HeaderDetailR" atlas="housing-foliage-header_right" useAtlasSize="true">
+                            <Anchors>
+                                <Anchor point="TOPRIGHT"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="HeaderDetailL" atlas="housing-dashboard-foliage-header-left" useAtlasSize="true">
+                            <Anchors>
+                                <Anchor point="TOPLEFT"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+
+                    <Layer level="ARTWORK" textureSubLevel="-1">
+                        <Texture parentKey="Sheen" atlas="housing-item-toast-framesheen" setAllPoints="true" alpha="0.35" alphaMode="BLEND"/>
+                    </Layer>
+                    
+                    <Layer level="BACKGROUND" textureSubLevel="1">
+                        <Texture parentKey="BottomShadow" atlas="GarrMission_RewardsBox_Shadow">
+                            <Size y="20"/>
+                            <Anchors>
+                                <Anchor point="BOTTOMLEFT"/>
+                                <Anchor point="BOTTOMRIGHT"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+
+                    <Layer level="BACKGROUND">
+                        <Texture parentKey="Background" atlas="guildfinder-card" setAllPoints="true"/>
+                    </Layer>
+
+                    <Layer level="BACKGROUND" textureSubLevel="-1">
+                        <Texture parentKey="BannerShadow" atlas="guildfinder-card-guildbanner-shadow">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativeKey="$parent.BannerBackground"/>
+                                <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BannerBackground"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+
+                    <Layer level="BORDER">
+                        <Texture parentKey="BannerBorder" atlas="guildfinder-card-guildbanner-border">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativeKey="$parent.BannerBackground"/>
+                                <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BannerBackground"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="Border" atlas="AdventureMap_TopBorder" setAllPoints="true"/>
+                    </Layer>
+
+                    <Layer level="OVERLAY">
+                        <Texture parentKey="BannerEmblem">
+                            <Size x="72" y="82"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent.BannerBackground" x="0" y="15"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
 
             <Button parentKey="ResetModelButton" inherits="CommonSquareIconButtonTemplate">
                 <Size x="48" y="48"/>
@@ -77,10 +202,57 @@
                     <KeyValue key="useAtlasSize" value="false" />
                 </KeyValues>
                 <Anchors>
-                    <Anchor point="TOPRIGHT" x="-25" y="-35" />
+                    <Anchor point="TOPRIGHT" x="-25" y="-25" />
                 </Anchors>
             </Button>
+
+            <Frame parentKey="MoneyContainer">
+                <Size x="180" y="22"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.PlayerCard" relativePoint="TOPRIGHT" x="10" y="-10" />
+                </Anchors>
+
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString parentKey="Text" font="GameFontWhite" text="Your Money:" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true"/>
+                    </Layer>
+                </Layers>
+            </Frame>
+
+            <Frame parentKey="CostContainer">
+                <Size y="22"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.MoneyFrame" relativePoint="BOTTOMLEFT" y="-10" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.MoneyFrame" relativePoint="BOTTOMRIGHT" y="-10"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString parentKey="Text" font="GameFontWhite" text="Cost:" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true"/>
+                    </Layer>
+                </Layers>
+            </Frame>
         </Frames>
+
+        <Layers>
+            <Layer level="BORDER">
+                <Texture parentKey="Border" atlas="housing-wood-frame" setAllPoints="true"/>
+            </Layer>
+            <Layer level="BACKGROUND" textureSubLevel="1">
+                <Texture parentKey="Footer" atlas="housing-basic-panel-footer">
+                    <Size y="40"/>
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT"/>
+                        <Anchor point="BOTTOMRIGHT"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="BackgroundOverlay" atlas="housing-wood-frame-basic-background" setAllPoints="true" alphaMode="DISABLE"/>
+            </Layer>
+            <Layer level="BACKGROUND" textureSubLevel="-1">
+                <Texture parentKey="Background" atlas="housing-basic-panel-background" setAllPoints="true" alphaMode="DISABLE"/>
+            </Layer>
+        </Layers>
 
         <Scripts>
             <OnLoad method="OnLoad"/>
