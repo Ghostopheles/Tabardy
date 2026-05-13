@@ -3,7 +3,7 @@
 
     <Script file="Gallery.lua" />
 
-    <Frame name="TabardyGallery" mixin="TabardyGalleryMixin" inherits="PortraitFrameFlatTemplate" parent="UIParent">
+    <Frame name="TabardyGallery" mixin="TabardyGalleryMixin" inherits="PortraitFrameFlatTemplate" parent="UIParent" hidden="true">
         <Size x="800" y="720"/>
         <Anchors>
             <Anchor point="CENTER"/>

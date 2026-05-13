@@ -121,7 +121,7 @@ function TabardyGalleryMixin:CollectEmblemChoices()
     return choices;
 end
 
-function Test()
+function GalleryTest()
     local DataProvider = CreateDataProvider();
     TabardyGallery.ScrollView:SetDataProvider(DataProvider);
 

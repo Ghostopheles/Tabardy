@@ -30,6 +30,7 @@ Templates/Dropdowns.xml
 Templates/ButtonPair.xml
 Templates/GalleryEntry.xml
 Templates/Gallery.xml
+Templates/Model.xml
 
 TabardyData.lua
 Tabardy.lua
