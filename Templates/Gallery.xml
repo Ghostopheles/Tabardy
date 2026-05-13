@@ -3,11 +3,8 @@
 
     <Script file="Gallery.lua" />
 
-    <Frame name="TabardyGallery" mixin="TabardyGalleryMixin" inherits="PortraitFrameFlatTemplate" parent="UIParent" hidden="true">
+    <Frame name="TabardyGalleryTemplate" mixin="TabardyGalleryMixin" inherits="PortraitFrameFlatTemplate" virtual="true">
         <Size x="800" y="720"/>
-        <Anchors>
-            <Anchor point="CENTER"/>
-        </Anchors>
 
         <Frames>
             <Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>

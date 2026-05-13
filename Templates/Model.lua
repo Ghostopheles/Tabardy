@@ -77,11 +77,6 @@ function TabardyModelFrameMixin:OnLoad()
 end
 
 function TabardyModelFrameMixin:OnShow()
-    if not UnitExists("npc") then
-        self:Hide();
-        return;
-    end
-
     self:Setup();
 end
 

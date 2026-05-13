@@ -10,12 +10,8 @@
         <PushedTexture atlas="house-chest-list-Item-pressed" useAtlasSize="false"/>
     </Button>
 
-    <Frame name="TabardyModelFrame" mixin="TabardyModelFrameMixin" parent="UIParent" hidden="true">
+    <Frame name="TabardyModelFrameTemplate" mixin="TabardyModelFrameMixin" virtual="true">
         <Size x="500" y="720"/>
-
-        <Anchors>
-            <Anchor point="CENTER"/>
-        </Anchors>
 
         <Frames>
             <TabardModel parentKey="Model">

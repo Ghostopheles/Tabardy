@@ -1,0 +1,35 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+    <Script file="Designer.lua" />
+
+    <Frame name="TabardyDesignerNew" parent="UIParent" mixin="TabardyDesignerNewMixin" hidden="true">
+        <Size x="1300" y="720"/>
+
+        <Anchors>
+            <Anchor point="CENTER"/>
+        </Anchors>
+
+        <Frames>
+            <Frame parentKey="ModelFrame" inherits="TabardyModelFrameTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT"/>
+                    <Anchor point="BOTTOMLEFT"/>
+                </Anchors>
+            </Frame>
+
+            <Frame parentKey="Gallery" inherits="TabardyGalleryTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.ModelFrame" relativePoint="TOPRIGHT"/>
+                    <Anchor point="BOTTOMRIGHT"/>
+                </Anchors>
+            </Frame>
+        </Frames>
+
+        <Scripts>
+            <OnLoad method="OnLoad"/>
+            <OnShow method="OnShow"/>
+        </Scripts>
+    </Frame>
+
+</Ui>
