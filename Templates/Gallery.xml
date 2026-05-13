@@ -3,18 +3,24 @@
 
     <Script file="Gallery.lua" />
 
-    <Frame name="TabardyGalleryTemplate" mixin="TabardyGalleryMixin" inherits="PortraitFrameFlatTemplate" virtual="true">
+    <Frame name="TabardyGalleryTemplate" mixin="TabardyGalleryMixin" virtual="true">
         <Size x="800" y="720"/>
 
         <Frames>
             <Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
             <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
                 <Anchors>
-                    <Anchor point="TOPRIGHT" x="-5" y="-28" />
+                    <Anchor point="TOPRIGHT" x="-5" y="-8" />
                     <Anchor point="BOTTOMRIGHT" x="-5" y="2" />
                 </Anchors>
             </EventFrame>
         </Frames>
+
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Background" atlas="housing-basic-panel--stone-background" setAllPoints="true"/>
+            </Layer>
+        </Layers>
 
         <Scripts>
             <OnLoad method="OnLoad"/>

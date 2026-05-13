@@ -23,17 +23,14 @@ TabardyGalleryMixin = {};
 TabardyGalleryMixin.GalleryEntryType = ENTRY_TYPE;
 
 function TabardyGalleryMixin:OnLoad()
-    ButtonFrameTemplate_HidePortrait(self);
-
     self:SetupScrollBox();
     self:SetupSelectionBehavior();
     self:SetupDecorations();
-    self:SetTitle("Tabardy Gallery");
 end
 
 function TabardyGalleryMixin:SetupScrollBox()
     local anchorsWithScrollBar = {
-        CreateAnchor("TOPLEFT", self, "TOPLEFT", 10, -30),
+        CreateAnchor("TOPLEFT", self, "TOPLEFT", 10, 0),
         CreateAnchor("TOPRIGHT", self.ScrollBar, "TOPLEFT", -5, 0),
         CreateAnchor("BOTTOM", self, "BOTTOM");
     };
